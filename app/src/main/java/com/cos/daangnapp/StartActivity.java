@@ -1,0 +1,28 @@
+package com.cos.daangnapp;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+
+import com.cos.daangnapp.location.LocationActivity;
+
+public class StartActivity extends AppCompatActivity {
+
+    private Button btn_start;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_start);
+
+        btn_start = findViewById(R.id.start_btn_set_location);
+
+        btn_start.setOnClickListener(v -> {
+            Intent intent = new Intent(StartActivity.this, LocationActivity.class);
+            startActivity(intent);
+            finish();
+        });
+    }
+}
