@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="사직제3동"
-            android:layout_marginLeft="30px"
+            android:layout_marginLeft="10px"
             android:textColor="@android:color/black"
             android:textSize="20sp" />
     </LinearLayout>
