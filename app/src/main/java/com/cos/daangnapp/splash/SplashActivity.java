@@ -1,10 +1,12 @@
-package com.cos.daangnapp;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.cos.daangnapp.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.cos.daangnapp.R;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -21,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
                 try {
                     Thread.sleep(1500);
                     Intent intent = new Intent(SplashActivity.this, StartActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     SplashActivity.this.finish();
                     Log.d(TAG, "run: 실행됨");

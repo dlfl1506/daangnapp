@@ -21,7 +21,7 @@
             android:contentDescription="@string/app_name"/>
 
         <EditText
-            android:id="@+id/location_et_search"
+            android:id="@+id/location_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="30dp"

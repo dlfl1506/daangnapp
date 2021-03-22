@@ -7,9 +7,12 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -37,6 +40,7 @@ public class LocationActivity extends AppCompatActivity {
     private LocationService locationService = LocationService .retrofit.create(LocationService .class);
     private RecyclerView rvLocationList;
     private LocationAdapter locationAdapter;
+    private EditText SearchLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class LocationActivity extends AppCompatActivity {
 
         init();
         getLocation();
+
         LocationSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,10 +57,26 @@ public class LocationActivity extends AppCompatActivity {
             }
         });
 
+        SearchLocation.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                    SearchLocation(s.toString());
+                }
+        });
+
     }
 
     public void init(){
         LocationSearchBtn = findViewById(R.id.location_btn_search);
+        SearchLocation = findViewById(R.id.location_search);
         rvLocationList= findViewById(R.id.rv_locationlist);
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         rvLocationList.setLayoutManager(manager);
@@ -79,9 +100,7 @@ public class LocationActivity extends AppCompatActivity {
 
             LocationReqDto locationReqDto = new LocationReqDto(longitude,latitude);
 
-            LocationSearch(locationReqDto);
-
-
+            CurrentLocation(locationReqDto);
 
         }
 
@@ -116,7 +135,7 @@ public class LocationActivity extends AppCompatActivity {
     }
 
 
-    public void LocationSearch(LocationReqDto locationReqDto){
+    public void CurrentLocation(LocationReqDto locationReqDto){
         Call<CMRespDto<List<LocationRespDto>>> call = locationService.getLocations(locationReqDto);
         call.enqueue(new Callback<CMRespDto<List<LocationRespDto>>>() {
             @Override
@@ -132,6 +151,25 @@ public class LocationActivity extends AppCompatActivity {
                 Log.d(TAG, "onFailure: 실패");
             }
         });
+    }
+
+    public void SearchLocation(String address){
+        Call<CMRespDto<List<LocationRespDto>>> call = locationService.getLocations(address);
+        call.enqueue(new Callback<CMRespDto<List<LocationRespDto>>>() {
+            @Override
+            public void onResponse(Call<CMRespDto<List<LocationRespDto>>> call, Response<CMRespDto<List<LocationRespDto>>> response) {
+                CMRespDto<List<LocationRespDto>> cmRespDto = response.body();
+                List<LocationRespDto> locations = cmRespDto.getData();
+                Log.d(TAG, "onResponse: "+locations);
+                locationAdapter.setLocations(locations);
+            }
+
+            @Override
+            public void onFailure(Call<CMRespDto<List<LocationRespDto>>> call, Throwable t) {
+                Log.d(TAG, "onFailure: 실패");
+            }
+        });
+
     }
 
 

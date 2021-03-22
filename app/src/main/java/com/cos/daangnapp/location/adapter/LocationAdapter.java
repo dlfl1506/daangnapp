@@ -1,9 +1,11 @@
 package com.cos.daangnapp.location.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cos.daangnapp.R;
 import com.cos.daangnapp.location.LocationActivity;
 import com.cos.daangnapp.location.model.LocationRespDto;
+import com.cos.daangnapp.login.LoginActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +26,11 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
     private List<LocationRespDto> locations;
     private LocationActivity laContext;
 
+
     public  LocationAdapter(LocationActivity laContext) {
         this.laContext= laContext;
         this.locations=new ArrayList<>();
+
     }
 
     public void setLocations(List<LocationRespDto> locations){
@@ -36,8 +41,15 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater =(LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);   // main엑티비티에 연결할 객체를 생성해주는 인플레이터
+       LayoutInflater inflater =(LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);   // main엑티비티에 연결할 객체를 생성해주는 인플레이터
         View view = inflater.inflate(R.layout.location_item,parent,false);
+        LinearLayout locationItem = view.findViewById(R.id.location_item);
+        locationItem.setOnClickListener(v -> {
+            Intent intent = new Intent(laContext, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            laContext.startActivity(intent);
+          laContext.finish();
+        });
         return new MyViewHolder(view);
     }
 
@@ -63,6 +75,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
             siname = itemView.findViewById(R.id.tv_siname);
             guname = itemView.findViewById(R.id.tv_guname);
             dongname= itemView.findViewById(R.id.tv_dongname);
+
         }
         public void setItem(LocationRespDto locationRespDto){
             siname.setText(locationRespDto.getSdm());

@@ -2,24 +2,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cos.daangnapp">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@drawable/splash_symbol"
         android:label="당근마켓"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Daangnapp">
-        <activity android:name=".location.LocationActivity"></activity>
-        <activity android:name=".StartActivity" />
+        android:theme="@style/Theme.Daangnapp"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".login.LoginActivity"></activity>
+        <activity android:name=".location.LocationActivity" />
+        <activity android:name=".splash.StartActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".SplashActivity">
+        <activity android:name=".splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
