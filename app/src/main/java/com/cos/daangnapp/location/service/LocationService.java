@@ -1,6 +1,6 @@
 package com.cos.daangnapp.location.service;
 
-import com.cos.daangnapp.location.model.CMRespDto;
+import com.cos.daangnapp.CMRespDto;
 import com.cos.daangnapp.location.model.LocationReqDto;
 import com.cos.daangnapp.location.model.LocationRespDto;
 
@@ -23,7 +23,7 @@ public interface LocationService {
     Call<CMRespDto<List<LocationRespDto>>> getLocations(@Query("address") String address );
 
     public static final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.35.111:8080/")
+            .baseUrl("http://192.168.219.104:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 }

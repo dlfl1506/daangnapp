@@ -60,7 +60,7 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/et_phone_number"
+        android:id="@+id/et_phoneNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -74,7 +74,7 @@
         android:textSize="20sp"></EditText>
 
     <Button
-        android:id="@+id/login_btn_get_cert"
+        android:id="@+id/btn_authcode_send"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -87,7 +87,7 @@
         android:textStyle="bold"></Button>
 
     <EditText
-        android:id="@+id/login_et_put_cert"
+        android:id="@+id/et_authcode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -99,7 +99,7 @@
         android:textSize="20dp"></EditText>
 
     <Button
-        android:id="@+id/login_btn_start"
+        android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"

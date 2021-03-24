@@ -1,4 +1,4 @@
-package com.cos.daangnapp.location.model;
+package com.cos.daangnapp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

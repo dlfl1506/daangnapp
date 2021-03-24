@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cos.daangnapp.R;
 import com.cos.daangnapp.location.adapter.LocationAdapter;
-import com.cos.daangnapp.location.model.CMRespDto;
+import com.cos.daangnapp.CMRespDto;
 import com.cos.daangnapp.location.model.LocationReqDto;
 import com.cos.daangnapp.location.model.LocationRespDto;
 import com.cos.daangnapp.location.service.LocationService;
