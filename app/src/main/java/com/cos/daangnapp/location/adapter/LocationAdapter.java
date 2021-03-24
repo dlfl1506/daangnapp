@@ -2,6 +2,7 @@ package com.cos.daangnapp.location.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,12 +44,17 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
        LayoutInflater inflater =(LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);   // main엑티비티에 연결할 객체를 생성해주는 인플레이터
         View view = inflater.inflate(R.layout.location_item,parent,false);
+        TextView dongname =view.findViewById(R.id.tv_dongname);
         LinearLayout locationItem = view.findViewById(R.id.location_item);
         locationItem.setOnClickListener(v -> {
+            SharedPreferences pref = v.getContext().getSharedPreferences("pref", LocationActivity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("address", dongname.getText().toString());
+            editor.commit();
             Intent intent = new Intent(laContext, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             laContext.startActivity(intent);
-          laContext.finish();
+            laContext.finish();
         });
         return new MyViewHolder(view);
     }

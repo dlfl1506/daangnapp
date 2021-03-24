@@ -1,5 +1,7 @@
 package com.cos.daangnapp.login;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -10,10 +12,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cos.daangnapp.CMRespDto;
+import com.cos.daangnapp.MainActivity;
 import com.cos.daangnapp.R;
 import com.cos.daangnapp.login.model.AuthReqDto;
 import com.cos.daangnapp.login.model.AuthRespDto;
+import com.cos.daangnapp.login.model.UserRespDto;
 import com.cos.daangnapp.login.service.AuthService;
+import com.cos.daangnapp.nickname.NicknameActivity;
+import com.cos.daangnapp.retrofitURL;
 
 import java.util.Random;
 
@@ -27,7 +33,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button BtnAuthCodeSend,btnLogin;
     private ImageButton backBtn;
     private static final String TAG = "LoginActivity";
-    private AuthService authService= AuthService .retrofit.create(AuthService .class);
+    private retrofitURL retrofitURL;
+    private AuthService authService= retrofitURL.retrofit.create(AuthService .class);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                 CMRespDto<AuthRespDto> cmRespDto = response.body();
                 AuthRespDto authRespDto = cmRespDto.getData();
                 if(authRespDto.getAuthCode().equals(authCode)){
-                    Toast.makeText(getApplicationContext(),"인증코드가 일치합니다.",Toast.LENGTH_SHORT).show();
+                    Login(authRespDto.getPhoneNumber());
                 }else{
                     Toast.makeText(getApplicationContext(),"인증코드가 맞지않습니다.",Toast.LENGTH_SHORT).show();
                 }
@@ -145,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
           CMRespDto<AuthRespDto> cmRespDto = response.body();
               AuthRespDto authRespDto = cmRespDto.getData();
              AuthCodeDelete(authRespDto.getId());
-                Toast.makeText(getApplicationContext(),"인증코드가 전송되었습니다. 유효시간 3분",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"인증코드가 전송되었습니다. 유효시간 30초",Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onFailure(Call<CMRespDto<AuthRespDto>> call, Throwable t) {
@@ -162,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
                 CMRespDto<AuthRespDto> cmRespDto = response.body();
                 AuthRespDto authRespDto = cmRespDto.getData();
                 AuthCodeDelete(authRespDto.getId());
-                Toast.makeText(getApplicationContext(),"인증코드가 전송되었습니다. 유효시간 3분",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"인증코드가 전송되었습니다. 유효시간 30초",Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onFailure(Call<CMRespDto<AuthRespDto>> call, Throwable t) {
@@ -177,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(180000);
+                    Thread.sleep(30000);
                     Call<CMRespDto> call = authService.deleteCode(id);
                     call.enqueue(new Callback<CMRespDto>() {
                         @Override
@@ -195,4 +202,36 @@ public class LoginActivity extends AppCompatActivity {
             }
         }).start();
             }
+
+    public void Login(String phoneNumber){
+        Call<CMRespDto<UserRespDto>> call = authService.UserSearch(phoneNumber);
+        call.enqueue(new Callback<CMRespDto<UserRespDto>>() {
+            @Override
+            public void onResponse(Call<CMRespDto<UserRespDto>> call, Response<CMRespDto<UserRespDto>> response) {
+                CMRespDto<UserRespDto> cmRespDto = response.body();
+                UserRespDto userRespDto = cmRespDto.getData();
+                if(userRespDto == null){
+                    Toast.makeText(getApplicationContext(),"인증코드가 일치합니다. \n닉네임을 입력해주세요",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginActivity.this, NicknameActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.putExtra("phoneNumber",etPhoneNumber.getText().toString());
+                    startActivity(intent);
+                    LoginActivity.this.finish();
+                }else {
+                    SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putInt("userId", userRespDto.getId());
+                    editor.commit();
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    LoginActivity.this.finish();
+                }
+            }
+            @Override
+            public void onFailure(Call<CMRespDto<UserRespDto>> call, Throwable t) {
+                Log.d(TAG, "onFailure: 로그인실패");
+            }
+        });
+    }
 }

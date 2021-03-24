@@ -20,12 +20,13 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cos.daangnapp.CMRespDto;
 import com.cos.daangnapp.R;
 import com.cos.daangnapp.location.adapter.LocationAdapter;
-import com.cos.daangnapp.CMRespDto;
 import com.cos.daangnapp.location.model.LocationReqDto;
 import com.cos.daangnapp.location.model.LocationRespDto;
 import com.cos.daangnapp.location.service.LocationService;
+import com.cos.daangnapp.retrofitURL;
 
 import java.util.List;
 
@@ -37,7 +38,8 @@ public class LocationActivity extends AppCompatActivity {
 
     private Button LocationSearchBtn;
     private static final String TAG = "LocationActivity";
-    private LocationService locationService = LocationService .retrofit.create(LocationService .class);
+    private retrofitURL retrofitURL;
+    private LocationService locationService = retrofitURL.retrofit.create(LocationService .class);
     private RecyclerView rvLocationList;
     private LocationAdapter locationAdapter;
     private EditText SearchLocation;

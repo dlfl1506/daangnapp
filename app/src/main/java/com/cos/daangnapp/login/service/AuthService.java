@@ -3,10 +3,9 @@ package com.cos.daangnapp.login.service;
 import com.cos.daangnapp.CMRespDto;
 import com.cos.daangnapp.login.model.AuthReqDto;
 import com.cos.daangnapp.login.model.AuthRespDto;
+import com.cos.daangnapp.login.model.UserRespDto;
 
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -29,9 +28,8 @@ public interface AuthService {
     @PUT("auth")
     Call<CMRespDto<AuthRespDto>> updateAuthCode(@Query("id")int id,@Query("authCode")String authCode);
 
+    @GET("user/phoneNumber")
+    Call<CMRespDto<UserRespDto>> UserSearch(@Query("phoneNumber")String phoneNumber);
 
-    public static final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.219.104:8080/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
+
 }
