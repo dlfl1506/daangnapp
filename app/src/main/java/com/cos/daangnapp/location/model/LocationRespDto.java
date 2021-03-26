@@ -15,7 +15,7 @@ public class LocationRespDto {
     private String sggm;
     private String omdm;
     private String drmcode;
-    private String drm ;
+    private String drm;
     private String jhyb;
     private String buildbb;
     private String buildboob;
@@ -26,5 +26,4 @@ public class LocationRespDto {
     private String ghhjd;
     private double entX;
     private double entY;
-
 }

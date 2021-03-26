@@ -59,8 +59,8 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_phoneNumber"
+    <EditText
+        android:id="@+id/auth_et_phoneNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -71,43 +71,20 @@
         android:maxLength="13"
         android:paddingStart="20dp"
         android:textColor="@android:color/black"
-        android:textSize="20sp"></TextView>
+        android:textSize="20sp"></EditText>
 
     <Button
-        android:id="@+id/btn_authcode_resend"
+        android:id="@+id/auth_btn_send"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
-        android:text="인증문자 다시 받기"
+        android:text="인증문자 받기"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:onClick="loginOnClick"
         android:textStyle="bold"></Button>
 
-    <EditText
-        android:id="@+id/et_authcode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:background="@drawable/border_background"
-        android:hint="인증번호를 입력해주세요"
-        android:singleLine="true"
-        android:inputType="number"
-        android:paddingStart="20dp"
-        android:textSize="20dp"></EditText>
-
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:text="동의하고 시작하기"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        android:onClick="loginOnClick"
-        android:textStyle="bold"></Button>
 
 </LinearLayout>

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cos.daangnapp.R;
 import com.cos.daangnapp.location.LocationActivity;
 import com.cos.daangnapp.location.model.LocationRespDto;
-import com.cos.daangnapp.login.LoginActivity;
+import com.cos.daangnapp.login.AuthActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
             SharedPreferences.Editor editor = pref.edit();
             editor.putString("address", dongname.getText().toString());
             editor.commit();
-            Intent intent = new Intent(laContext, LoginActivity.class);
+            Intent intent = new Intent(laContext, AuthActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             laContext.startActivity(intent);
             laContext.finish();

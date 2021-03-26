@@ -1,29 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/id_test"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
    >
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 
-    <include layout="@layout/toolbar_home"/>
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar_home"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-
-    <RelativeLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_postlist"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="11"
-        />
+        android:layout_height="607dp"
+        android:layout_marginTop="72dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/include"
+        tools:ignore="MissingConstraints" />
 
     <LinearLayout
-        android:paddingLeft="7dp"
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:baselineAligned="false"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="7dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints">
 
         <LinearLayout
             android:id="@+id/main_btn_home"
@@ -38,9 +53,9 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center"
-                android:contentDescription="@string/app_name"
                 android:layout_marginTop="5dp"
                 android:background="@null"
+                android:contentDescription="@string/app_name"
                 android:scaleType="fitXY"
                 android:src="@drawable/tab_icon_home" />
 
@@ -57,8 +72,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="fragmentOnClick"
             android:background="@drawable/ripple_effect"
+            android:onClick="fragmentOnClick"
             android:orientation="vertical">
 
             <ImageView
@@ -67,9 +82,9 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:background="@null"
+                android:contentDescription="@string/app_name"
                 android:scaleType="fitXY"
-                android:src="@drawable/tab_icon_category"
-                android:contentDescription="@string/app_name"/>
+                android:src="@drawable/tab_icon_category" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -84,8 +99,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="fragmentOnClick"
             android:background="@drawable/ripple_effect"
+            android:onClick="fragmentOnClick"
             android:orientation="vertical">
 
             <ImageView
@@ -94,9 +109,9 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:background="@null"
+                android:contentDescription="@string/app_name"
                 android:scaleType="fitXY"
-                android:src="@drawable/tab_icon_write"
-                android:contentDescription="@string/app_name" />
+                android:src="@drawable/tab_icon_write" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -104,6 +119,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:text="내 근처" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -111,8 +127,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="fragmentOnClick"
             android:background="@drawable/ripple_effect"
+            android:onClick="fragmentOnClick"
             android:orientation="vertical">
 
             <ImageView
@@ -121,9 +137,9 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:background="@null"
+                android:contentDescription="@string/app_name"
                 android:scaleType="fitXY"
-                android:src="@drawable/tab_icon_chat"
-                android:contentDescription="@string/app_name" />
+                android:src="@drawable/tab_icon_chat" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -138,8 +154,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="fragmentOnClick"
             android:background="@drawable/ripple_effect"
+            android:onClick="fragmentOnClick"
             android:orientation="vertical">
 
             <ImageView
@@ -148,9 +164,9 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:background="@null"
+                android:contentDescription="@string/app_name"
                 android:scaleType="fitXY"
-                android:src="@drawable/tab_icon_profile"
-                android:contentDescription="@string/app_name" />
+                android:src="@drawable/tab_icon_profile" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -162,4 +178,50 @@
 
     </LinearLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_dongne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="14dp"
+        android:clickable="true"
+        app:fabCustomSize="50dp"
+        android:visibility="invisible"
+        android:backgroundTint="@android:color/holo_orange_dark"
+        app:tint="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/fab_joongo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/app_icon_splash" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_joongo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="14dp"
+        android:clickable="true"
+        android:visibility="invisible"
+        android:foregroundGravity="center"
+        app:fabCustomSize="50dp"
+        android:backgroundTint="@android:color/holo_orange_dark"
+        app:tint="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/fab_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/action_icon_share" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="70dp"
+        android:backgroundTint="@android:color/holo_orange_dark"
+        app:tint="@android:color/white"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_add"
+       />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

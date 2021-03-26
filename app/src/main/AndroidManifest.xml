@@ -15,7 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Daangnapp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".nickname.NicknameActivity"></activity>
+        <activity android:name=".writing.WritingActivity"></activity>
+        <activity android:name=".login.AuthActivity" />
+        <activity android:name=".login.NicknameActivity" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".location.LocationActivity" />
         <activity android:name=".splash.StartActivity" />

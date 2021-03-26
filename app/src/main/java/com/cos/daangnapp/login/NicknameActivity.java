@@ -1,4 +1,4 @@
-package com.cos.daangnapp.nickname;
+package com.cos.daangnapp.login;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,7 +37,11 @@ public class NicknameActivity extends AppCompatActivity {
 
         init();
         btnStart.setOnClickListener(v -> {
-            NickNameCheck(etNickName.getText().toString());
+            if(etNickName.getText().toString().equals("")){
+                Toast.makeText(getApplicationContext(),"닉네임을 입력해주세요.",Toast.LENGTH_SHORT).show();
+            }else {
+                NickNameCheck(etNickName.getText().toString());
+            }
         });
     }
     public void init(){

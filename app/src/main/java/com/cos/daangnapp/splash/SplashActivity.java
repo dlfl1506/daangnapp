@@ -31,12 +31,13 @@ public class SplashActivity extends AppCompatActivity {
                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                        startActivity(intent);
                        SplashActivity.this.finish();
-                   }else{
-                       Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                       intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                       startActivity(intent);
-                       SplashActivity.this.finish();
-                       Log.d(TAG, "run: 실행됨");
+                   }
+                   else{
+                           Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                           intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                           startActivity(intent);
+                           SplashActivity.this.finish();
+                           Log.d(TAG, "run: 실행됨");
                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();

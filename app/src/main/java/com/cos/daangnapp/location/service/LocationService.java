@@ -20,5 +20,4 @@ public interface LocationService {
     @GET("location")
     Call<CMRespDto<List<LocationRespDto>>> getLocations(@Query("address") String address );
 
-
 }
