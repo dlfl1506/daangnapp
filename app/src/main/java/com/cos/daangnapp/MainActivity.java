@@ -20,7 +20,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import info.androidhive.fontawesome.FontDrawable;
 
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener {
-    private LinearLayout test;
     private Animation fab_open, fab_close;
     private LinearLayout btnProfile;
     private Boolean isFabOpen = false;
@@ -53,8 +52,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         fabDongne=findViewById(R.id.fab_dongne);
         toolbar_tvDong = findViewById(R.id.toolbar_tv_dong);
         btnProfile = findViewById(R.id.main_btn_profile);
-
-        test = findViewById(R.id.id_test);
     }
 
     public void initSetting(){
@@ -62,9 +59,9 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
 
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        String address = pref.getString("address", null);
+        String dong = pref.getString("dong", null);
 
-        toolbar_tvDong.setText(address);
+        toolbar_tvDong.setText(dong);
         fabAdd.setOnClickListener(this);
         fabJoongo.setOnClickListener(this);
         fabDongne.setOnClickListener(this);
@@ -95,6 +92,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 break;
     }
 }
+
     public void anim() {
         if (isFabOpen) {
             FontDrawable plus = new FontDrawable(this, R.string.fa_plus_solid, true, false);

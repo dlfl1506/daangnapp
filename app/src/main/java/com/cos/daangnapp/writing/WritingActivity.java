@@ -3,6 +3,7 @@ package com.cos.daangnapp.writing;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,18 +19,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cos.daangnapp.CMRespDto;
 import com.cos.daangnapp.R;
+import com.cos.daangnapp.retrofitURL;
 import com.cos.daangnapp.writing.adapter.WritingAdapter;
+import com.cos.daangnapp.writing.model.PostSaveReqDto;
+import com.cos.daangnapp.writing.model.PostSaveRespDto;
+import com.cos.daangnapp.writing.service.PostService;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class WritingActivity extends AppCompatActivity  {
-   private  EditText mEtTitle, mEtPrice, mEtDescription;
-   private TextView mTvNumOfPic, mTvCategories, mTvCategoryNo;
+   private  EditText mEtTitle, mEtPrice, mEtContent;
+   private TextView  mTvCategories, mTvCategoryNo;
    private  final int PICK_IMAGE_MULTIPLE = 1;
     private ArrayList<Uri> mUriArrayList = new ArrayList<>();
    private  RecyclerView rvImage;
    private  WritingAdapter writingAdapter;
+   private retrofitURL retrofitURL;
+    private PostService postService= retrofitURL.retrofit.create(PostService .class);
+
     private static final String TAG = "WritingActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +55,12 @@ public class WritingActivity extends AppCompatActivity  {
     }
     public void init(){
 
-        mTvNumOfPic = findViewById(R.id.writing_tv_number_of_pic);
         mEtTitle = findViewById(R.id.writing_et_title);
         mEtPrice = findViewById(R.id.writing_et_price);
-        mEtDescription = findViewById(R.id.writing_et_description);
+        mEtContent = findViewById(R.id.writing_et_content);
         mTvCategories = findViewById(R.id.writing_tv_categories);
         mTvCategoryNo = findViewById(R.id.writing_tv_categoryNo);
-        rvImage = findViewById(R.id.writing_rv);
+        rvImage=findViewById(R.id.writing_rv);
     }
 
     public void writingOnClick(View view) {
@@ -57,7 +69,19 @@ public class WritingActivity extends AppCompatActivity  {
                 onBackPressed();
                 break;
             case R.id.writing_btn_submit:
-
+                SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                String dong = pref.getString("dong", null);
+                String gu = pref.getString("gu", null);
+                int userId = pref.getInt("userId",0);
+                PostSaveReqDto postSaveReqDto = new PostSaveReqDto();
+                postSaveReqDto.setTitle(mEtTitle.getText().toString());
+                postSaveReqDto.setCategory(mTvCategories.getText().toString());
+                postSaveReqDto.setPrice(mEtPrice.getText().toString());
+                postSaveReqDto.setContent(mEtContent.getText().toString());
+                postSaveReqDto.setImg(mUriArrayList.toString());
+                postSaveReqDto.setDong(dong);
+                postSaveReqDto.setGu(gu);
+                  submit(postSaveReqDto,userId);
                 break;
             case R.id.writing_btn_categories:
                 showCategories();
@@ -68,6 +92,20 @@ public class WritingActivity extends AppCompatActivity  {
             default:
                 break;
         }
+    }
+
+    public void submit(PostSaveReqDto postSaveReqDto,int userId) {
+        Call<CMRespDto<PostSaveRespDto>> call = postService.save(postSaveReqDto,userId);
+        call.enqueue(new Callback<CMRespDto<PostSaveRespDto>>() {
+            @Override
+            public void onResponse(Call<CMRespDto<PostSaveRespDto>> call, Response<CMRespDto<PostSaveRespDto>> response) {
+                Log.d(TAG, "onResponse: save 완료");
+            }
+            @Override
+            public void onFailure(Call<CMRespDto<PostSaveRespDto>> call, Throwable t) {
+                Log.d(TAG, "onFailure: save 실패");
+            }
+        });
     }
 
     @Override
@@ -114,14 +152,14 @@ public class WritingActivity extends AppCompatActivity  {
                         for (int i = 0; i < mClipData.getItemCount(); i++) {
                             ClipData.Item item = mClipData.getItemAt(i);
                             uri = item.getUri();
-                            Log.d(TAG, "onActivityResult: "+uri);
                             mUriArrayList.add(uri);
                             Log.d(TAG, "onActivityResult: "+mUriArrayList);
                         }
-                        mTvNumOfPic.setText(mUriArrayList.size() + "/10");
+
                        rvImage.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
                         writingAdapter = new WritingAdapter(mUriArrayList, this);
                         rvImage.setAdapter(writingAdapter);
+
                     }
                 }
             } else {

@@ -25,8 +25,8 @@ public class SplashActivity extends AppCompatActivity {
                 try {
                     Thread.sleep(1500);
                     SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-                   int userId = pref.getInt("userId",0);
-                   if(userId == 0){
+                  int userId = pref.getInt("userId",0);
+                   if(userId ==0){
                        Intent intent = new Intent(SplashActivity.this, StartActivity.class);
                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                        startActivity(intent);

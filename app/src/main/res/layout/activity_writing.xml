@@ -83,12 +83,13 @@
                     android:layout_gravity="center"
                     android:src="@drawable/ic_camera_filled_24" />
 
+
                 <TextView
                     android:id="@+id/writing_tv_number_of_pic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="0/10" />
+                    android:text="사진첨부" />
             </LinearLayout>
         </FrameLayout>
 
@@ -190,7 +191,7 @@
         android:background="@color/colorGray" />
 
     <EditText
-        android:id="@+id/writing_et_description"
+        android:id="@+id/writing_et_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20dp"

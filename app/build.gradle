@@ -28,6 +28,7 @@ android {
 }
 
 dependencies {
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'info.androidhive:fontawesome:0.0.5'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'

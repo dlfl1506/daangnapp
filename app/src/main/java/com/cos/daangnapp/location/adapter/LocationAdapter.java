@@ -26,7 +26,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
 
     private List<LocationRespDto> locations;
     private LocationActivity laContext;
-
+    private static final String TAG = "LocationAdapter";
 
     public  LocationAdapter(LocationActivity laContext) {
         this.laContext= laContext;
@@ -44,12 +44,14 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
        LayoutInflater inflater =(LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);   // main엑티비티에 연결할 객체를 생성해주는 인플레이터
         View view = inflater.inflate(R.layout.location_item,parent,false);
+        TextView guname = view.findViewById(R.id.tv_guname);
         TextView dongname =view.findViewById(R.id.tv_dongname);
         LinearLayout locationItem = view.findViewById(R.id.location_item);
         locationItem.setOnClickListener(v -> {
             SharedPreferences pref = v.getContext().getSharedPreferences("pref", LocationActivity.MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
-            editor.putString("address", dongname.getText().toString());
+            editor.putString("dong", dongname.getText().toString());
+            editor.putString("gu",guname.getText().toString());
             editor.commit();
             Intent intent = new Intent(laContext, AuthActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

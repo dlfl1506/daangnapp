@@ -29,8 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
-
+public class LoginActivity extends AppCompatActivity  {
     private TextView tvphoneNumber;
     private EditText etAuthCode;
     private Button authcodeResend,btnLogin;
@@ -42,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
 
         init();
 
@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             CodeVerify(tvphoneNumber.getText().toString(),etAuthCode.getText().toString());
         });
     }
+
 
     public void init(){
         backBtn = findViewById(R.id.login_iv_back);
@@ -267,4 +268,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 }
