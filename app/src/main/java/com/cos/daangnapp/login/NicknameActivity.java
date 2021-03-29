@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cos.daangnapp.CMRespDto;
-import com.cos.daangnapp.MainActivity;
+import com.cos.daangnapp.main.MainActivity;
 import com.cos.daangnapp.R;
 import com.cos.daangnapp.login.model.UserRespDto;
 import com.cos.daangnapp.login.model.UserSaveReqDto;

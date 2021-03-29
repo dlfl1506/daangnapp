@@ -21,7 +21,7 @@
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".location.LocationActivity" />
         <activity android:name=".splash.StartActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".main.MainActivity" />
         <activity android:name=".splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

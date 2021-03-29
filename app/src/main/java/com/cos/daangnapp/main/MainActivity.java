@@ -1,8 +1,9 @@
-package com.cos.daangnapp;
+package com.cos.daangnapp.main;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -12,18 +13,34 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.cos.daangnapp.CMRespDto;
+import com.cos.daangnapp.R;
+import com.cos.daangnapp.main.model.PostRespDto;
+import com.cos.daangnapp.retrofitURL;
 import com.cos.daangnapp.splash.StartActivity;
 import com.cos.daangnapp.writing.WritingActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.List;
+
 import info.androidhive.fontawesome.FontDrawable;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener {
+    private static final String TAG = "MainActivity";
     private Animation fab_open, fab_close;
     private LinearLayout btnProfile;
     private Boolean isFabOpen = false;
     private TextView toolbar_tvDong;
+    private RecyclerView postList;
+    private MainAdapter mainAdapter;
+    private retrofitURL retrofitURL;
+    private MainService mainService = retrofitURL.retrofit.create(MainService .class);
     private FloatingActionButton fabAdd, fabJoongo, fabDongne;
 
     @Override
@@ -52,6 +69,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         fabDongne=findViewById(R.id.fab_dongne);
         toolbar_tvDong = findViewById(R.id.toolbar_tv_dong);
         btnProfile = findViewById(R.id.main_btn_profile);
+        postList = findViewById(R.id.rv_postlist);
     }
 
     public void initSetting(){
@@ -60,8 +78,10 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         String dong = pref.getString("dong", null);
+        String gu = pref.getString("gu", null);
 
         toolbar_tvDong.setText(dong);
+    //    postList(gu);
         fabAdd.setOnClickListener(this);
         fabJoongo.setOnClickListener(this);
         fabDongne.setOnClickListener(this);
@@ -70,7 +90,34 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         plus.setTextColor(ContextCompat.getColor(this, android.R.color.white));
         fabAdd.setImageDrawable(plus);
+
+        LinearLayoutManager manager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
+        postList.setLayoutManager(manager);
     }
+
+
+    public void postList(String gu){
+        Call<CMRespDto<List<PostRespDto>>> call = mainService.getposts(gu);
+        call.enqueue(new Callback<CMRespDto<List<PostRespDto>>>() {
+            @Override
+            public void onResponse(Call<CMRespDto<List<PostRespDto>>> call, Response<CMRespDto<List<PostRespDto>>> response) {
+                try {
+                    CMRespDto<List<PostRespDto>> cmRespDto = response.body();
+                    List<PostRespDto> posts = cmRespDto.getData();
+                    Log.d(TAG, "posts: " +posts);
+                    mainAdapter = new MainAdapter(posts,MainActivity.this);
+                    postList.setAdapter(mainAdapter);
+                } catch (Exception e) {
+                    Log.d(TAG, "null");
+                }
+            }
+            @Override
+            public void onFailure(Call<CMRespDto<List<PostRespDto>>> call, Throwable t) {
+                Log.d(TAG, "onFailure: 게시물목록보기 실패 !!");
+            }
+        });
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -119,6 +166,8 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
             isFabOpen = true;
         }
     }
+
+
 
 
 

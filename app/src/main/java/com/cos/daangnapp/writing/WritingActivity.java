@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cos.daangnapp.CMRespDto;
+import com.cos.daangnapp.main.MainActivity;
 import com.cos.daangnapp.R;
 import com.cos.daangnapp.retrofitURL;
 import com.cos.daangnapp.writing.adapter.WritingAdapter;
@@ -81,7 +83,20 @@ public class WritingActivity extends AppCompatActivity  {
                 postSaveReqDto.setImg(mUriArrayList.toString());
                 postSaveReqDto.setDong(dong);
                 postSaveReqDto.setGu(gu);
-                  submit(postSaveReqDto,userId);
+
+
+                if(mEtTitle.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(),"제목 을 입력해주세요.",Toast.LENGTH_SHORT).show();
+                }else if(mTvCategories.getText().toString().equals("카테고리")){
+                    Toast.makeText(getApplicationContext(),"카테고리를 선택해주세요.",Toast.LENGTH_SHORT).show();
+                }else if(mEtPrice.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(),"가격 을 입력해주세요.",Toast.LENGTH_SHORT).show();
+                }else if(mEtContent.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(),"내용 을 입력해주세요.",Toast.LENGTH_SHORT).show();
+                }else {
+                    submit(postSaveReqDto, userId);
+                }
+
                 break;
             case R.id.writing_btn_categories:
                 showCategories();
@@ -100,6 +115,10 @@ public class WritingActivity extends AppCompatActivity  {
             @Override
             public void onResponse(Call<CMRespDto<PostSaveRespDto>> call, Response<CMRespDto<PostSaveRespDto>> response) {
                 Log.d(TAG, "onResponse: save 완료");
+                Intent intent = new Intent(WritingActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                WritingActivity.this.finish();
             }
             @Override
             public void onFailure(Call<CMRespDto<PostSaveRespDto>> call, Throwable t) {

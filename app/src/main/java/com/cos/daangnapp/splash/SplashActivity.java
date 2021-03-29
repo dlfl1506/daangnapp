@@ -7,7 +7,7 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.cos.daangnapp.MainActivity;
+import com.cos.daangnapp.main.MainActivity;
 import com.cos.daangnapp.R;
 
 public class SplashActivity extends AppCompatActivity {
