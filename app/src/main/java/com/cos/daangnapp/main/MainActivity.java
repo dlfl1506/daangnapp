@@ -7,7 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cos.daangnapp.CMRespDto;
 import com.cos.daangnapp.R;
+import com.cos.daangnapp.location.LocationActivity;
 import com.cos.daangnapp.main.model.PostRespDto;
 import com.cos.daangnapp.retrofitURL;
 import com.cos.daangnapp.splash.StartActivity;
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     private retrofitURL retrofitURL;
     private MainService mainService = retrofitURL.retrofit.create(MainService .class);
     private FloatingActionButton fabAdd, fabJoongo, fabDongne;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +72,8 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         fabAdd=findViewById(R.id.fab_add);
         fabJoongo=findViewById(R.id.fab_joongo);
         fabDongne=findViewById(R.id.fab_dongne);
-        toolbar_tvDong = findViewById(R.id.toolbar_tv_dong);
+    //     toolbar_tvDong = findViewById(R.id.toolbar_tv_dong);
+
         btnProfile = findViewById(R.id.main_btn_profile);
         postList = findViewById(R.id.rv_postlist);
     }
@@ -80,8 +86,32 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         String dong = pref.getString("dong", null);
         String gu = pref.getString("gu", null);
 
-        toolbar_tvDong.setText(dong);
-    //    postList(gu);
+        String[] LocationList = {
+              dong,"다른 동네 선택"
+        };
+        spinner =findViewById(R.id.toolbar_tv_dong);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, LocationList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setSelection(0);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position ==1) {
+                    Intent intent = new Intent(MainActivity.this, LocationActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        postList(gu);
         fabAdd.setOnClickListener(this);
         fabJoongo.setOnClickListener(this);
         fabDongne.setOnClickListener(this);
@@ -93,6 +123,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         LinearLayoutManager manager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
         postList.setLayoutManager(manager);
+
     }
 
 

@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -44,7 +46,7 @@ public class WritingActivity extends AppCompatActivity  {
    private  WritingAdapter writingAdapter;
    private retrofitURL retrofitURL;
     private PostService postService= retrofitURL.retrofit.create(PostService .class);
-
+    private PostSaveReqDto postSaveReqDto = new PostSaveReqDto();
     private static final String TAG = "WritingActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,25 @@ public class WritingActivity extends AppCompatActivity  {
         mTvCategories = findViewById(R.id.writing_tv_categories);
         mTvCategoryNo = findViewById(R.id.writing_tv_categoryNo);
         rvImage=findViewById(R.id.writing_rv);
+
+        mEtPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                    if(s.toString().equals("0")){
+                        mEtPrice.setText("무료나눔");
+                    }
+            }
+        });
     }
 
     public void writingOnClick(View view) {
@@ -75,12 +96,11 @@ public class WritingActivity extends AppCompatActivity  {
                 String dong = pref.getString("dong", null);
                 String gu = pref.getString("gu", null);
                 int userId = pref.getInt("userId",0);
-                PostSaveReqDto postSaveReqDto = new PostSaveReqDto();
+
                 postSaveReqDto.setTitle(mEtTitle.getText().toString());
                 postSaveReqDto.setCategory(mTvCategories.getText().toString());
                 postSaveReqDto.setPrice(mEtPrice.getText().toString());
                 postSaveReqDto.setContent(mEtContent.getText().toString());
-                postSaveReqDto.setImg(mUriArrayList.toString());
                 postSaveReqDto.setDong(dong);
                 postSaveReqDto.setGu(gu);
 
@@ -165,16 +185,21 @@ public class WritingActivity extends AppCompatActivity  {
                 if (data.getData() != null) {
                     Uri uri;
                     //mUriArrayList.add(uri);
-
                     if (data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
                         for (int i = 0; i < mClipData.getItemCount(); i++) {
                             ClipData.Item item = mClipData.getItemAt(i);
                             uri = item.getUri();
                             mUriArrayList.add(uri);
+                            if(mUriArrayList.size() == 0){
+                                postSaveReqDto.setImg(null);
+                            }else if(mUriArrayList.size() ==1 ){
+                                postSaveReqDto.setImg(""+uri.toString()+"");
+                            }else{
+                                postSaveReqDto.setImg(mUriArrayList.toString());
+                            }
                             Log.d(TAG, "onActivityResult: "+mUriArrayList);
                         }
-
                        rvImage.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
                         writingAdapter = new WritingAdapter(mUriArrayList, this);
                         rvImage.setAdapter(writingAdapter);

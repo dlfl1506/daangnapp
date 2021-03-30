@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.cos.daangnapp.R;
 import com.cos.daangnapp.main.model.PostRespDto;
 
@@ -39,7 +40,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-                 holder.setItem(posts.get(position));
+                 holder.setItem(mContext,posts.get(position));
     }
 
     @Override
@@ -51,7 +52,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder>{
 
         private ImageView photo;
         private TextView tvTitle,tvDong,tvTime,tvPrice,tvReply,tvFavorite;
-
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             photo= itemView.findViewById(R.id.home_iv_product_pic);
@@ -60,15 +60,34 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder>{
             tvTime =itemView.findViewById(R.id.home_tv_reroll);
             tvPrice= itemView.findViewById(R.id.home_tv_price);
             tvFavorite = itemView.findViewById(R.id.home_tv_interest);
+
         }
-        public void setItem(PostRespDto postRespDto){
+        public void setItem(MainActivity mContext,PostRespDto postRespDto){
+            String tmp = postRespDto.getPrice();
+
+            if(postRespDto.getImg() == null) {
+
+            }else if(postRespDto.getImg().length() <=50){
+                Glide.with(mContext).load(postRespDto.getImg()).into(photo);
+            }else{
+                String str = postRespDto.getImg();
+                String str2 = str.replace("[", "&");
+                String gubun[] = str2.split("&");
+                String gubun1[] = gubun[1].split(",");
+                Glide.with(mContext).load(""+gubun1[0]+"").into(photo);
+            }
+     //       Glide.with(mContext).load(postRespDto.getImg()).into(photo);
             tvTitle.setText(postRespDto.getTitle());
             tvDong.setText(postRespDto.getDong());
             tvTime.setText(postRespDto.getCreateDate().toString());
-            tvPrice.setText(postRespDto.getPrice());
+            if(tmp.equals("무료나눔")){
+                tvPrice.setText(tmp);
+            }else{
+                tvPrice.setText(tmp+"원");
+            }
             tvFavorite.setText(postRespDto.getFavorite()+"");
         }
-    }
 
+    }
 
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.cos.daangnapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Daangnapp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".writing.WritingActivity"></activity>
+        <activity android:name=".detail.DetailActivity"></activity>
+        <activity android:name=".writing.WritingActivity" />
         <activity android:name=".login.AuthActivity" />
         <activity android:name=".login.NicknameActivity" />
         <activity android:name=".login.LoginActivity" />

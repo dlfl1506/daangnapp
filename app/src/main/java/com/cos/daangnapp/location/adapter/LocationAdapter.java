@@ -16,6 +16,7 @@ import com.cos.daangnapp.R;
 import com.cos.daangnapp.location.LocationActivity;
 import com.cos.daangnapp.location.model.LocationRespDto;
 import com.cos.daangnapp.login.AuthActivity;
+import com.cos.daangnapp.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,10 +54,20 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
             editor.putString("dong", dongname.getText().toString());
             editor.putString("gu",guname.getText().toString());
             editor.commit();
-            Intent intent = new Intent(laContext, AuthActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            laContext.startActivity(intent);
-            laContext.finish();
+
+
+            int userId = pref.getInt("userId",0);
+            if(userId == 0) {
+                Intent intent = new Intent(laContext, AuthActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                laContext.startActivity(intent);
+                laContext.finish();
+            }else{
+                Intent intent = new Intent(laContext, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                laContext.startActivity(intent);
+                laContext.finish();
+            }
         });
         return new MyViewHolder(view);
     }

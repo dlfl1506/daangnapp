@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">daangnapp</string>
+    <string name="str_prompt_of_spinnerExample">다른 동네를 선택하세요.</string>
 </resources>

@@ -18,16 +18,18 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
+
+        <Spinner
             android:id="@+id/toolbar_tv_dong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="20dp"
-            android:text="전포 제1동"
+            android:layout_margin="15dp"
             android:textColor="@android:color/black"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+        />
 
         <TextView
             android:layout_width="0dp"

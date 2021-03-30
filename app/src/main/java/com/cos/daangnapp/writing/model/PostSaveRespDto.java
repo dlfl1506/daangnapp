@@ -11,7 +11,7 @@ public class PostSaveRespDto {
     private int id;
     private String title; // 제목
     private String content; // 내용
-    private int price; // 가격
+    private String price; // 가격
     private String img; // 이미지 사진
     private int favorite;
     private  int count;
