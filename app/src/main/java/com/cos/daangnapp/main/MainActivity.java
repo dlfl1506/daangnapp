@@ -3,50 +3,28 @@ package com.cos.daangnapp.main;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.cos.daangnapp.CMRespDto;
 import com.cos.daangnapp.R;
-import com.cos.daangnapp.location.LocationActivity;
-import com.cos.daangnapp.main.model.PostRespDto;
-import com.cos.daangnapp.retrofitURL;
+import com.cos.daangnapp.main.home.HomeFragment;
 import com.cos.daangnapp.splash.StartActivity;
 import com.cos.daangnapp.writing.WritingActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.List;
-
 import info.androidhive.fontawesome.FontDrawable;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener {
     private static final String TAG = "MainActivity";
     private Animation fab_open, fab_close;
-    private LinearLayout btnProfile;
     private Boolean isFabOpen = false;
-    private TextView toolbar_tvDong;
-    private RecyclerView postList;
-    private MainAdapter mainAdapter;
-    private retrofitURL retrofitURL;
-    private MainService mainService = retrofitURL.retrofit.create(MainService .class);
     private FloatingActionButton fabAdd, fabJoongo, fabDongne;
-    private Spinner spinner;
+    private HomeFragment mHomeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,62 +34,54 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         init();
         initSetting();
 
-        btnProfile.setOnClickListener(v -> {
-            SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-            editor.clear();
-            editor.commit();
-
-            Intent intent = new Intent(MainActivity.this, StartActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            MainActivity.this.finish();
-        });
+        mHomeFragment = new HomeFragment();
+        moveHome();
     }
+
+    public void moveHome() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, mHomeFragment).commit();
+    }
+
+    public void fragmentOnClick(View view) {
+        switch (view.getId()) {
+            case R.id.main_btn_home:
+                moveHome();
+                break;
+            case R.id.main_btn_category:
+            //    moveCategory();
+                break;
+            case R.id.main_btn_writing:
+            //    moveWriting();
+                break;
+            case R.id.main_btn_chat:
+          //      moveChat();
+                break;
+            case R.id.main_btn_profile:
+           //     moveProfile();
+                SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.clear();
+                editor.commit();
+                Intent intent = new Intent(MainActivity.this, StartActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                MainActivity.this.finish();
+                break;
+            default:
+                break;
+        }
+    }
+
     public void init(){
         fabAdd=findViewById(R.id.fab_add);
         fabJoongo=findViewById(R.id.fab_joongo);
         fabDongne=findViewById(R.id.fab_dongne);
-    //     toolbar_tvDong = findViewById(R.id.toolbar_tv_dong);
-
-        btnProfile = findViewById(R.id.main_btn_profile);
-        postList = findViewById(R.id.rv_postlist);
     }
 
     public void initSetting(){
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
 
-        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        String dong = pref.getString("dong", null);
-        String gu = pref.getString("gu", null);
-
-        String[] LocationList = {
-              dong,"다른 동네 선택"
-        };
-        spinner =findViewById(R.id.toolbar_tv_dong);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, LocationList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(0);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position ==1) {
-                    Intent intent = new Intent(MainActivity.this, LocationActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        postList(gu);
         fabAdd.setOnClickListener(this);
         fabJoongo.setOnClickListener(this);
         fabDongne.setOnClickListener(this);
@@ -121,33 +91,10 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         plus.setTextColor(ContextCompat.getColor(this, android.R.color.white));
         fabAdd.setImageDrawable(plus);
 
-        LinearLayoutManager manager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
-        postList.setLayoutManager(manager);
-
     }
 
 
-    public void postList(String gu){
-        Call<CMRespDto<List<PostRespDto>>> call = mainService.getposts(gu);
-        call.enqueue(new Callback<CMRespDto<List<PostRespDto>>>() {
-            @Override
-            public void onResponse(Call<CMRespDto<List<PostRespDto>>> call, Response<CMRespDto<List<PostRespDto>>> response) {
-                try {
-                    CMRespDto<List<PostRespDto>> cmRespDto = response.body();
-                    List<PostRespDto> posts = cmRespDto.getData();
-                    Log.d(TAG, "posts: " +posts);
-                    mainAdapter = new MainAdapter(posts,MainActivity.this);
-                    postList.setAdapter(mainAdapter);
-                } catch (Exception e) {
-                    Log.d(TAG, "null");
-                }
-            }
-            @Override
-            public void onFailure(Call<CMRespDto<List<PostRespDto>>> call, Throwable t) {
-                Log.d(TAG, "onFailure: 게시물목록보기 실패 !!");
-            }
-        });
-    }
+
 
 
     @Override

@@ -194,7 +194,7 @@ public class WritingActivity extends AppCompatActivity  {
                             if(mUriArrayList.size() == 0){
                                 postSaveReqDto.setImg(null);
                             }else if(mUriArrayList.size() ==1 ){
-                                postSaveReqDto.setImg(""+uri.toString()+"");
+                                postSaveReqDto.setImg(uri.toString());
                             }else{
                                 postSaveReqDto.setImg(mUriArrayList.toString());
                             }

@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content">
 
                 <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/product_information_viewPager"
+                    android:id="@+id/detail_viewPager"
                     android:layout_width="match_parent"
                     android:layout_height="350dp" />
 
@@ -75,7 +75,7 @@
                 </LinearLayout>
 
                 <me.relex.circleindicator.CircleIndicator
-                    android:id="@+id/product_information_indicator"
+                    android:id="@+id/detail_indicator"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_gravity="bottom"
@@ -92,7 +92,7 @@
                 android:padding="20dp">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/detail_iv_profile"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_user_profile_placeholder" />
@@ -105,7 +105,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/product_information_tv_nickname"
+                        android:id="@+id/detail_nickname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="판매자 닉네임"
@@ -119,7 +119,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/product_information_tv_address"
+                            android:id="@+id/detail_tv_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="address"
@@ -194,7 +194,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/product_information_tv_title"
+                    android:id="@+id/detail_tv_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="촬영용 당근 샘플 판매합니다 (실내에서 촬영시 착용)"
@@ -208,22 +208,23 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/product_information_tv_categories"
+                        android:id="@+id/detail_tv_categories"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="categories"
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/product_information_tv_reroll"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:id="@+id/detail_tv_time"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text=" reroll"
                         android:textSize="12sp" />
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/product_information_tv_text"
+                    android:id="@+id/detail_tv_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -238,25 +239,32 @@
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
+
                     <TextView
-                        android:id="@+id/product_information_tv_chat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="채팅 0개"
+                        android:text=" 관심 "
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/product_information_tv_favorite"
+                        android:id="@+id/detail_tv_favorite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" 관심 1"
+                        android:text=" 1"
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/product_information_tv_hits"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" 조회 55"
+                        android:text=" 조회"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_marginLeft="2dp"
+                        android:id="@+id/detail_tv_viewCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="55"
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -284,46 +292,6 @@
                 android:layout_marginRight="15dp"
                 android:background="@color/colorGray" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:text="댓글"
-                    android:textColor="@android:color/black"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="4dp"
-                    android:text="0"
-                    android:textColor="@android:color/black"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="20dp"
-                    android:text="댓글쓰기"
-                    android:textColor="@android:color/black" />
-            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -339,10 +307,18 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/product_information_tv_nickname_another"
+                    android:id="@+id/detail_tv_nickname_another"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Jerrry님의 판매 상품"
+                    android:text="Jerrry"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="님의 판매 상품"
                     android:textColor="@android:color/black"
                     android:textSize="17sp"
                     android:textStyle="bold" />
@@ -407,7 +383,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/product_information_tv_price"
+                    android:id="@+id/detail_tv_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="170,000원"

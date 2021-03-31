@@ -1,4 +1,4 @@
-package com.cos.daangnapp.main.model;
+package com.cos.daangnapp.main.home.model;
 
 import com.cos.daangnapp.login.model.UserRespDto;
 

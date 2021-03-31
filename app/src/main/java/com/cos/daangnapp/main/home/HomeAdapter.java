@@ -1,4 +1,4 @@
-package com.cos.daangnapp.main;
+package com.cos.daangnapp.main.home;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,22 +15,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cos.daangnapp.R;
-import com.cos.daangnapp.detail.DetailActivity;
-import com.cos.daangnapp.main.model.PostRespDto;
+import com.cos.daangnapp.main.home.detail.DetailActivity;
+import com.cos.daangnapp.main.home.model.PostRespDto;
 
 import java.util.List;
 
-public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder>{
+public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
 
-    private static final String TAG = "ContactAdapter";
-    private List<PostRespDto> posts;
-    private MainActivity mContext;
+    private static final String TAG = "HomeAdapter";
+    private List<PostRespDto> mItemsList;
+    private LayoutInflater mInflater;
+    private Context mContext;
+    private  HomeFragment homeFragment;
 
-    public MainAdapter(List<PostRespDto> posts, MainActivity mContext) {
-        this.posts = posts;
+    public HomeAdapter(List<PostRespDto> mItemsList, Context mContext) {
+        this.mItemsList = mItemsList;
+        this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.mContext = mContext;
     }
-
 
     @NonNull
     @Override
@@ -44,14 +46,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-                 holder.setItem(mContext,posts.get(position));
+        holder.setItem(mContext,mItemsList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return posts.size();
+        return mItemsList.size();
     }
-
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         private ImageView photo;
@@ -69,13 +70,15 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder>{
             productItem= itemView.findViewById(R.id.product_item);
 
         }
-        public void setItem(MainActivity mContext,PostRespDto postRespDto){
+        public void setItem(Context mContext, PostRespDto postRespDto){
             String tmp = postRespDto.getPrice();
 
+            Log.d(TAG, "setItem: " +postRespDto.getImg());
             if(postRespDto.getImg() == null) {
 
             }else if(postRespDto.getImg().length() <=50){
                 Glide.with(mContext).load(postRespDto.getImg()).into(photo);
+                Log.d(TAG, "haha: "+postRespDto.getImg());
                 photo.setClipToOutline(true);
                 photo.setScaleType(ImageView.ScaleType.FIT_XY);
             }else{
@@ -83,11 +86,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder>{
                 String str2 = str.replace("[", "&");
                 String gubun[] = str2.split("&");
                 String gubun1[] = gubun[1].split(",");
-                Glide.with(mContext).load(""+gubun1[0]+"").into(photo);
+                Glide.with(mContext).load(gubun1[0]).into(photo);
+                Log.d(TAG, "haha2: "+gubun1[0]);
                 photo.setClipToOutline(true);
                 photo.setScaleType(ImageView.ScaleType.FIT_XY);
             }
-     //       Glide.with(mContext).load(postRespDto.getImg()).into(photo);
+            //       Glide.with(mContext).load(postRespDto.getImg()).into(photo);
             tvTitle.setText(postRespDto.getTitle());
             tvDong.setText(postRespDto.getDong());
             tvTime.setText(postRespDto.getCreateDate().toString());
@@ -99,11 +103,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder>{
             tvFavorite.setText(postRespDto.getFavorite()+"");
 
             productItem.setOnClickListener(v -> {
-              Intent intent = new Intent(mContext, DetailActivity.class);
-              intent.putExtra("postId", postRespDto.getId());
-              mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, DetailActivity.class);
+                intent.putExtra("postId", postRespDto.getId());
+                mContext.startActivity(intent);
 
             });
         }
     }
 }
+
+
