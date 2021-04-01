@@ -87,16 +87,12 @@ public class HomeFragment extends Fragment  {
 
             }
         });
-
         postList= view.findViewById(R.id.rv_postlist);
         LinearLayoutManager manager = new LinearLayoutManager(activity,RecyclerView.VERTICAL,false);
         postList.setLayoutManager(manager);
         getposts(gu);
-
-
         return view;
     }
-
     public void getposts(String gu){
         Call<CMRespDto<List<PostRespDto>>> call =homeService.getposts(gu);
         call.enqueue(new Callback<CMRespDto<List<PostRespDto>>>() {
@@ -118,5 +114,6 @@ public class HomeFragment extends Fragment  {
             }
         });
     }
+
 
 }

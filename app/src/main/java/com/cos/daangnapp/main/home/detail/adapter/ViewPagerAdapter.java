@@ -33,10 +33,9 @@ public class ViewPagerAdapter extends PagerAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.detail_image, null);
         ImageView mImageView = view.findViewById(R.id.detail_iv);
-
         Log.d(TAG, "instantiateItem: "+photoList);
-      Glide.with(mContext).load(photoList.get(position).trim()).into(mImageView);
-      container.addView(view);
+       Glide.with(mContext).load(photoList.get(position)).into(mImageView);
+        container.addView(view);
 
         return view ;
     }

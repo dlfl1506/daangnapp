@@ -57,62 +57,54 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         private ImageView photo;
-        private TextView tvTitle,tvDong,tvTime,tvPrice,tvReply,tvFavorite;
+        private TextView tvTitle,tvDong,tvTime,tvPrice,tvFavorite;
         private LinearLayout productItem;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+
             photo= itemView.findViewById(R.id.home_iv_product_pic);
             tvTitle=itemView.findViewById(R.id.home_tv_product_name);
             tvDong=itemView.findViewById(R.id.home_tv_address);
             tvTime =itemView.findViewById(R.id.home_tv_reroll);
             tvPrice= itemView.findViewById(R.id.home_tv_price);
             tvFavorite = itemView.findViewById(R.id.home_tv_interest);
-
             productItem= itemView.findViewById(R.id.product_item);
 
         }
         public void setItem(Context mContext, PostRespDto postRespDto){
-            String tmp;
-            if(postRespDto.getPrice().equals("무료나눔")){
-                tmp ="무료나눔";
-            }else {
-                tmp = moneyFormatToWon(Integer.parseInt(postRespDto.getPrice()));
-            }
+            try {
+                String tmp;
+                if(postRespDto.getPrice().equals("무료나눔")){
+                    tmp ="무료나눔";
+                }else {
+                    tmp = moneyFormatToWon(Integer.parseInt(postRespDto.getPrice()));
+                }
 
-            Log.d(TAG, "setItem: " +postRespDto.getImg());
-            if(postRespDto.getImg() == null) {
-
-            }
-            else if(postRespDto.getImg().length() <=50){
-                Glide.with(mContext).load(postRespDto.getImg()).into(photo);
+                Glide.with(mContext).load(postRespDto.getImages().get(0).getUri()).into(photo);
                 photo.setClipToOutline(true);
                 photo.setScaleType(ImageView.ScaleType.FIT_XY);
-            }else{
-                String str = postRespDto.getImg();
-                String str2 = str.replace("[", "&");
-                String gubun[] = str2.split("&");
-                String gubun1[] = gubun[1].split(",");
-                Glide.with(mContext).load(gubun1[0]).into(photo);
-                photo.setClipToOutline(true);
-                photo.setScaleType(ImageView.ScaleType.FIT_XY);
-            }
-            tvTitle.setText(postRespDto.getTitle());
-            tvDong.setText(postRespDto.getDong());
-            tvTime.setText(postRespDto.getCreateDate().toString());
-            if(tmp.equals("무료나눔")){
-                tvPrice.setText(tmp);
-            }else{
-                tvPrice.setText(tmp+"원");
-            }
-            tvFavorite.setText(postRespDto.getFavorite()+"");
 
-            productItem.setOnClickListener(v -> {
-                Intent intent = new Intent(mContext, DetailActivity.class);
-                intent.putExtra("postId", postRespDto.getId());
-                mContext.startActivity(intent);
+                tvTitle.setText(postRespDto.getTitle());
+                tvDong.setText(postRespDto.getDong());
+                tvTime.setText(postRespDto.getCreateDate().toString());
+                if(tmp.equals("무료나눔")){
+                    tvPrice.setText(tmp);
+                }else{
+                    tvPrice.setText(tmp+"원");
+                }
+                tvFavorite.setText(postRespDto.getFavorite()+"");
 
-            });
+                productItem.setOnClickListener(v -> {
+                    Intent intent = new Intent(mContext, DetailActivity.class);
+                    intent.putExtra("postId", postRespDto.getId());
+                    mContext.startActivity(intent);
+                });
+            } catch (Exception e) {
+                Log.d(TAG, "null");
+            }
+
         }
+
         public static String moneyFormatToWon(int inputMoney) {
             DecimalFormat decimalFormat = new DecimalFormat("#,##0");
             return decimalFormat.format(inputMoney);

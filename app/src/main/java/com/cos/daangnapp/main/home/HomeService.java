@@ -10,6 +10,9 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface HomeService {
+
+
     @GET("post/gu")
     Call<CMRespDto<List<PostRespDto>>> getposts(@Query("gu") String gu);
+
 }

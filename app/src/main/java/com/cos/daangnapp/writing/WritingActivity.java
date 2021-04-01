@@ -23,10 +23,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cos.daangnapp.CMRespDto;
-import com.cos.daangnapp.main.MainActivity;
 import com.cos.daangnapp.R;
+import com.cos.daangnapp.main.MainActivity;
 import com.cos.daangnapp.retrofitURL;
 import com.cos.daangnapp.writing.adapter.WritingAdapter;
+import com.cos.daangnapp.main.home.model.ImageRespDto;
+import com.cos.daangnapp.writing.model.ImageSaveReqdto;
 import com.cos.daangnapp.writing.model.PostSaveReqDto;
 import com.cos.daangnapp.writing.model.PostSaveRespDto;
 import com.cos.daangnapp.writing.service.PostService;
@@ -47,6 +49,7 @@ public class WritingActivity extends AppCompatActivity  {
    private retrofitURL retrofitURL;
     private PostService postService= retrofitURL.retrofit.create(PostService .class);
     private PostSaveReqDto postSaveReqDto = new PostSaveReqDto();
+    private ImageSaveReqdto imageSaveReqdto = new ImageSaveReqdto();
     private static final String TAG = "WritingActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +107,6 @@ public class WritingActivity extends AppCompatActivity  {
                 postSaveReqDto.setDong(dong);
                 postSaveReqDto.setGu(gu);
 
-
                 if(mEtTitle.getText().toString().equals("")){
                     Toast.makeText(getApplicationContext(),"제목 을 입력해주세요.",Toast.LENGTH_SHORT).show();
                 }else if(mTvCategories.getText().toString().equals("카테고리")){
@@ -114,9 +116,8 @@ public class WritingActivity extends AppCompatActivity  {
                 }else if(mEtContent.getText().toString().equals("")){
                     Toast.makeText(getApplicationContext(),"내용 을 입력해주세요.",Toast.LENGTH_SHORT).show();
                 }else {
-                    submit(postSaveReqDto, userId);
+                   submit(postSaveReqDto, userId);
                 }
-
                 break;
             case R.id.writing_btn_categories:
                 showCategories();
@@ -135,6 +136,13 @@ public class WritingActivity extends AppCompatActivity  {
             @Override
             public void onResponse(Call<CMRespDto<PostSaveRespDto>> call, Response<CMRespDto<PostSaveRespDto>> response) {
                 Log.d(TAG, "onResponse: save 완료");
+                CMRespDto<PostSaveRespDto> cmRespDto = response.body();
+                PostSaveRespDto postSaveRespDto = cmRespDto.getData();
+                imageSaveReqdto.setPostId(postSaveRespDto.getId());
+                for(int i=0; i<mUriArrayList.size(); i++){
+                    imageSaveReqdto.setUri(mUriArrayList.get(i).toString());
+                    ImageSave(imageSaveReqdto);
+                }
                 Intent intent = new Intent(WritingActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -145,6 +153,21 @@ public class WritingActivity extends AppCompatActivity  {
                 Log.d(TAG, "onFailure: save 실패");
             }
         });
+    }
+
+    public void ImageSave(ImageSaveReqdto imageSaveReqdto){
+        Call<CMRespDto<ImageRespDto>> call = postService.Imagesave(imageSaveReqdto);
+        call.enqueue(new Callback<CMRespDto<ImageRespDto>>() {
+            @Override
+            public void onResponse(Call<CMRespDto<ImageRespDto>> call, Response<CMRespDto<ImageRespDto>> response) {
+                Log.d(TAG, "이미지저장 성공");
+            }
+            @Override
+            public void onFailure(Call<CMRespDto<ImageRespDto>> call, Throwable t) {
+                Log.d(TAG, "이미지 저장 실패");
+            }
+        });
+
     }
 
     @Override
@@ -192,14 +215,15 @@ public class WritingActivity extends AppCompatActivity  {
                                 uri = item.getUri();
                                 mUriArrayList.add(uri);
 
-                                if (mUriArrayList.size() == 0) {
+                               /* if (mUriArrayList.size() == 0) {
                                     postSaveReqDto.setImg(null);
                                 } else if (mUriArrayList.size() == 1) {
                                     postSaveReqDto.setImg(uri.toString());
                                 } else {
                                     postSaveReqDto.setImg(mUriArrayList.toString());
                                 }
-                                Log.d(TAG, "onActivityResult: " + mUriArrayList);
+
+                                Log.d(TAG, "onActivityResult: " + mUriArrayList);*/
                             }
 
                        rvImage.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));

@@ -3,6 +3,7 @@ package com.cos.daangnapp.main.home.model;
 import com.cos.daangnapp.login.model.UserRespDto;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import lombok.Data;
 
@@ -12,7 +13,7 @@ public class PostRespDto {
     private String title; // 제목
     private String content; // 내용
     private String price; // 가격
-    private String img;
+    private List<ImageRespDto> images;
     private int favorite; // 관심수
     private int count; //조회수
     private UserRespDto user;

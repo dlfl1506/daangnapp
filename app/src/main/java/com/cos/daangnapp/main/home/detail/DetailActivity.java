@@ -118,64 +118,13 @@ tvPrice = findViewById(R.id.detail_tv_price);
                 }else{
                     tmp = moneyFormatToWon(Integer.parseInt(posts.getPrice()));
                 }
-
                 mImageList = new ArrayList();
-
-                if(posts.getImg().length()<=50){
-                    mImageList.add(posts.getImg());
-                }else if(posts.getImg().length()<=100){
-                    String str = posts.getImg();
-                    String str2 = str.replace("[", "&");
-                    String gubun[] = str2.split("&");
-                    String gubun1[] = gubun[1].split(",");
-
-                    String str3 = gubun1[1].replace("]","&");
-                    String gubun2[] =str3.split("&");
-
-                    mImageList.add(gubun1[0]);
-                    mImageList.add(gubun2[0]);
-                }else if(posts.getImg().length()<=150){
-                    String str = posts.getImg();
-                    String str2 = str.replace("[", "&");
-                    String gubun[] = str2.split("&");
-                    String gubun1[] = gubun[1].split(",");
-
-                    String str3 = gubun1[2].replace("]", "&");
-                    String gubun2[] =str3.split("&");
-
-                    mImageList.add(gubun1[0]);
-                    mImageList.add(gubun1[1]);
-                    mImageList.add(gubun2[0]);
-                }else if(posts.getImg().length()<=200){
-                    String str = posts.getImg();
-                    String str2 = str.replace("[", "&");
-                    String gubun[] = str2.split("&");
-                    String gubun1[] = gubun[1].split(",");
-
-                    String str3 = gubun1[3].replace("]", "&");
-                    String gubun2[] =str3.split("&");
-
-                    mImageList.add(gubun1[0]);
-                    mImageList.add(gubun1[1]);
-                    mImageList.add(gubun1[2]);
-                    mImageList.add(gubun2[0]);
-                }else if(posts.getImg().length()<=250){
-                    String str = posts.getImg();
-                    String str2 = str.replace("[", "&");
-                    String gubun[] = str2.split("&");
-                    String gubun1[] = gubun[1].split(",");
-
-                    String str3 = gubun1[4].replace("]", "&");
-                    String gubun2[] =str3.split("&");
-                    mImageList.add(gubun1[0]);
-                    mImageList.add(gubun1[1]);
-                    mImageList.add(gubun1[2]);
-                    mImageList.add(gubun1[3]);
-                    mImageList.add(gubun2[0]);
+                Log.d(TAG, "postImge "+posts.getImages().size());
+                for(int i=0; i<posts.getImages().size(); i++) {
+                    mImageList.add(posts.getImages().get(i).getUri().toString());
+                    Log.d(TAG, "onResponse: "+posts.getImages().get(i).toString());
+                    Log.d(TAG, "onResponse: "+mImageList);
                 }
-
-                Log.d(TAG, "post: "+mImageList);
-
              photoList = findViewById(R.id.detail_viewPager);
              Log.d(TAG, "mImageList: "+mImageList);
             viewPagerAdapter = new ViewPagerAdapter(DetailActivity.this,mImageList);
