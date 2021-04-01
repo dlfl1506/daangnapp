@@ -3,7 +3,11 @@ package com.cos.daangnapp.main.profile;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +20,29 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.cos.daangnapp.CMRespDto;
 import com.cos.daangnapp.R;
+import com.cos.daangnapp.login.model.UserRespDto;
 import com.cos.daangnapp.main.MainActivity;
+import com.cos.daangnapp.profileedit.ProfileEdit;
+import com.cos.daangnapp.retrofitURL;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProfileFragment  extends Fragment {
 
+    private Context mContext;
+    private static final String TAG = "ProfileFragment";
     private MainActivity activity;
     private  LinearLayout mBtnLogin, mTvSetting, mBtnLocation, mBtnChangeLocation;
     private TextView mTvNickname, mTvLocation,mTvCode;
-    private  ImageView mIvSetting, mIvChange;
+    private  ImageView IvPhoto,IvPhotoEdit,mIvSetting, mIvChange;
     private Button mBtnMyProfile;
-
-
+    private retrofitURL retrofitURL;
+    private ProfileService profileService= retrofitURL.retrofit.create(ProfileService .class);
+private String photo;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -53,6 +68,8 @@ public class ProfileFragment  extends Fragment {
 
         mTvSetting = view.findViewById(R.id.profile_tv_setting);
         mIvSetting = view.findViewById(R.id.profile_iv_setting);
+        IvPhoto = view.findViewById(R.id.profile_iv_photo);
+        IvPhotoEdit = view.findViewById(R.id.profile_iv_photo_Edit);
 
         mIvSetting.setOnClickListener(v -> {
             moveSettingActivity();
@@ -61,20 +78,60 @@ public class ProfileFragment  extends Fragment {
             moveSettingActivity();
         });
 
+
+
         SharedPreferences pref =getActivity().getSharedPreferences("pref",Context.MODE_PRIVATE);
-       int code = pref.getInt("userId",0);
+       int userId = pref.getInt("userId",0);
         String dong = pref.getString("dong",null);
-        String nickname = pref.getString("nickName", null);
 
-        mTvNickname.setText(nickname);
+        IvPhotoEdit.setOnClickListener(v -> {
+            Intent intent = new Intent(activity, ProfileEdit.class);
+            intent.putExtra("userId", userId);
+            intent.putExtra("nickName",mTvNickname.getText());
+            intent.putExtra("photo",photo);
+            startActivity(intent);
+        });
+
         mTvLocation.setText(dong);
-        mTvCode.setText(code+"");
-
+        getUser(userId);
         return view;
     }
 
     public void moveSettingActivity() {
         Intent intent = new Intent(activity, SettingActivity.class);
         startActivity(intent);
+    }
+
+    public void getUser(int userId){
+        Call<CMRespDto<UserRespDto>> call =profileService.getuser(userId);
+            call.enqueue(new Callback<CMRespDto<UserRespDto>>() {
+                @Override
+                public void onResponse(Call<CMRespDto<UserRespDto>> call, Response<CMRespDto<UserRespDto>> response) {
+                    CMRespDto<UserRespDto> cmRespDto = response.body();
+                    UserRespDto user= cmRespDto.getData();
+                    try {
+                        mTvNickname.setText(user.getNickName());
+                        mTvCode.setText(user.getId()+"");
+                        Log.d(TAG, "onResponse: "+user.getPhoto());
+                        if(user.getPhoto()==null){
+
+                        }else{
+                            photo=user.getPhoto();
+                       Uri uri = Uri.parse(user.getPhoto());
+                            IvPhoto.setImageURI(uri);
+                            IvPhoto.setBackground(new ShapeDrawable(new OvalShape()));
+                            IvPhoto.setClipToOutline(true);
+                            IvPhoto.setScaleType(ImageView.ScaleType.FIT_XY);
+                        }
+                    } catch (Exception e) {
+                        Log.d(TAG, "null");
+                    }
+                }
+                @Override
+                public void onFailure(Call<CMRespDto<UserRespDto>> call, Throwable t) {
+                    Log.d(TAG, "getUser실패");
+                }
+            });
+
     }
 }

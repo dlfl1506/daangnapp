@@ -63,13 +63,14 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/profile_iv_change_image"
+                        android:id="@+id/profile_iv_photo"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:layout_margin="20dp"
                         android:src="@drawable/ic_user_profile_placeholder" />
 
                     <ImageView
+                        android:id="@+id/profile_iv_photo_Edit"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="bottom|end"

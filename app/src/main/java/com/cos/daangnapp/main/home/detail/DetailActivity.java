@@ -1,8 +1,12 @@
 package com.cos.daangnapp.main.home.detail;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +34,7 @@ import retrofit2.Response;
 
 public class DetailActivity extends AppCompatActivity {
 
+    private Context mContext;
     private static final String TAG = "DetailActivity";
     private ViewPagerAdapter viewPagerAdapter;
     private ArrayList<String> mImageList;
@@ -119,11 +124,9 @@ tvPrice = findViewById(R.id.detail_tv_price);
                     tmp = moneyFormatToWon(Integer.parseInt(posts.getPrice()));
                 }
                 mImageList = new ArrayList();
-                Log.d(TAG, "postImge "+posts.getImages().size());
+
                 for(int i=0; i<posts.getImages().size(); i++) {
-                    mImageList.add(posts.getImages().get(i).getUri().toString());
-                    Log.d(TAG, "onResponse: "+posts.getImages().get(i).toString());
-                    Log.d(TAG, "onResponse: "+mImageList);
+                    mImageList.add(posts.getImages().get(i).getUri());
                 }
              photoList = findViewById(R.id.detail_viewPager);
              Log.d(TAG, "mImageList: "+mImageList);
@@ -134,6 +137,16 @@ tvPrice = findViewById(R.id.detail_tv_price);
                 viewPagerAdapter.notifyDataSetChanged();
                 circleIndicator.setViewPager(photoList);
 
+
+                if(posts.getUser().getPhoto() ==null){
+
+                }else {
+                    Uri uri = Uri.parse(posts.getUser().getPhoto());
+                    profile.setImageURI(uri);
+                    profile.setBackground(new ShapeDrawable(new OvalShape()));
+                    profile.setClipToOutline(true);
+                    profile.setScaleType(ImageView.ScaleType.FIT_XY);
+                }
                 tvNickName.setText(posts.getUser().getNickName());
                 tvAddress.setText(posts.getDong());
                 tvTitle.setText(posts.getTitle());

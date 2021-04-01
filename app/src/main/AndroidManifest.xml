@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Daangnapp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".main.profile.SettingActivity"></activity>
+        <activity android:name=".profileedit.ProfileEdit"></activity>
+        <activity android:name=".main.profile.SettingActivity" />
         <activity android:name=".main.home.detail.DetailActivity" />
         <activity android:name=".writing.WritingActivity" />
         <activity android:name=".login.AuthActivity" />
