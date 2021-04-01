@@ -18,6 +18,7 @@ import com.cos.daangnapp.R;
 import com.cos.daangnapp.main.home.detail.DetailActivity;
 import com.cos.daangnapp.main.home.model.PostRespDto;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
@@ -71,14 +72,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
 
         }
         public void setItem(Context mContext, PostRespDto postRespDto){
-            String tmp = postRespDto.getPrice();
+            String tmp;
+            if(postRespDto.getPrice().equals("무료나눔")){
+                tmp ="무료나눔";
+            }else {
+                tmp = moneyFormatToWon(Integer.parseInt(postRespDto.getPrice()));
+            }
 
             Log.d(TAG, "setItem: " +postRespDto.getImg());
             if(postRespDto.getImg() == null) {
 
-            }else if(postRespDto.getImg().length() <=50){
+            }
+            else if(postRespDto.getImg().length() <=50){
                 Glide.with(mContext).load(postRespDto.getImg()).into(photo);
-                Log.d(TAG, "haha: "+postRespDto.getImg());
                 photo.setClipToOutline(true);
                 photo.setScaleType(ImageView.ScaleType.FIT_XY);
             }else{
@@ -87,11 +93,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
                 String gubun[] = str2.split("&");
                 String gubun1[] = gubun[1].split(",");
                 Glide.with(mContext).load(gubun1[0]).into(photo);
-                Log.d(TAG, "haha2: "+gubun1[0]);
                 photo.setClipToOutline(true);
                 photo.setScaleType(ImageView.ScaleType.FIT_XY);
             }
-            //       Glide.with(mContext).load(postRespDto.getImg()).into(photo);
             tvTitle.setText(postRespDto.getTitle());
             tvDong.setText(postRespDto.getDong());
             tvTime.setText(postRespDto.getCreateDate().toString());
@@ -108,6 +112,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
                 mContext.startActivity(intent);
 
             });
+        }
+        public static String moneyFormatToWon(int inputMoney) {
+            DecimalFormat decimalFormat = new DecimalFormat("#,##0");
+            return decimalFormat.format(inputMoney);
         }
     }
 }

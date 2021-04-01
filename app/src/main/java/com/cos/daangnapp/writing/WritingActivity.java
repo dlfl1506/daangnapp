@@ -187,19 +187,21 @@ public class WritingActivity extends AppCompatActivity  {
                     //mUriArrayList.add(uri);
                     if (data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
-                        for (int i = 0; i < mClipData.getItemCount(); i++) {
-                            ClipData.Item item = mClipData.getItemAt(i);
-                            uri = item.getUri();
-                            mUriArrayList.add(uri);
-                            if(mUriArrayList.size() == 0){
-                                postSaveReqDto.setImg(null);
-                            }else if(mUriArrayList.size() ==1 ){
-                                postSaveReqDto.setImg(uri.toString());
-                            }else{
-                                postSaveReqDto.setImg(mUriArrayList.toString());
+                            for (int i = 0; i < mClipData.getItemCount(); i++) {
+                                ClipData.Item item = mClipData.getItemAt(i);
+                                uri = item.getUri();
+                                mUriArrayList.add(uri);
+
+                                if (mUriArrayList.size() == 0) {
+                                    postSaveReqDto.setImg(null);
+                                } else if (mUriArrayList.size() == 1) {
+                                    postSaveReqDto.setImg(uri.toString());
+                                } else {
+                                    postSaveReqDto.setImg(mUriArrayList.toString());
+                                }
+                                Log.d(TAG, "onActivityResult: " + mUriArrayList);
                             }
-                            Log.d(TAG, "onActivityResult: "+mUriArrayList);
-                        }
+
                        rvImage.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
                         writingAdapter = new WritingAdapter(mUriArrayList, this);
                         rvImage.setAdapter(writingAdapter);

@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Daangnapp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".main.home.detail.DetailActivity"></activity>
+        <activity android:name=".main.profile.SettingActivity"></activity>
+        <activity android:name=".main.home.detail.DetailActivity" />
         <activity android:name=".writing.WritingActivity" />
         <activity android:name=".login.AuthActivity" />
         <activity android:name=".login.NicknameActivity" />

@@ -1,14 +1,19 @@
 package com.cos.daangnapp.splash;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.cos.daangnapp.main.MainActivity;
 import com.cos.daangnapp.R;
+import com.cos.daangnapp.main.MainActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -46,5 +51,10 @@ public class SplashActivity extends AppCompatActivity {
         }).start();
 
 
+
     }
+
+
+
+
 }

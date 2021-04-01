@@ -1,10 +1,12 @@
 package com.cos.daangnapp.main.home.detail;
 
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ import com.cos.daangnapp.main.home.detail.service.DetailService;
 import com.cos.daangnapp.main.home.model.PostRespDto;
 import com.cos.daangnapp.retrofitURL;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import me.relex.circleindicator.CircleIndicator;
@@ -27,11 +30,11 @@ import retrofit2.Response;
 
 public class DetailActivity extends AppCompatActivity {
 
-private Context mContext;
     private static final String TAG = "DetailActivity";
     private ViewPagerAdapter viewPagerAdapter;
     private ArrayList<String> mImageList;
     private int postId;
+    private  ImageButton mBack, mShare, mMore;
     private ViewPager photoList;
     private CircleIndicator circleIndicator;
     private ImageView profile;
@@ -61,12 +64,26 @@ tvFavorite = findViewById(R.id.detail_tv_favorite);
 tvViewCount = findViewById(R.id.detail_tv_viewCount);
 tvAnotherNick = findViewById(R.id.detail_tv_nickname_another);
 tvPrice = findViewById(R.id.detail_tv_price);
+        mBack = findViewById(R.id.product_information_iv_back);
+        mShare = findViewById(R.id.product_information_iv_share);
+        mMore = findViewById(R.id.product_information_iv_more);
 
     }
     public void initSetting(){
         Intent intent = getIntent();
         postId = intent.getIntExtra("postId", 1);
         getpost(postId);
+
+
+        mBack.setImageResource(R.drawable.home_as_up);
+        mBack.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_IN);
+        mShare.setImageResource(R.drawable.ic_share_outline_24);
+        mShare.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_IN);
+        mMore.setImageResource(R.drawable.icon_ads_more);
+        mMore.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_IN);
+
+
+
     }
 
     public void productInformationOnClick(View view) {
@@ -95,18 +112,78 @@ tvPrice = findViewById(R.id.detail_tv_price);
             public void onResponse(Call<CMRespDto<PostRespDto>> call, Response<CMRespDto<PostRespDto>> response) {
                 CMRespDto<PostRespDto> cmRespDto = response.body();
                 PostRespDto posts = cmRespDto.getData();
+                String tmp;
+                if(posts.getPrice().equals("무료나눔")){
+                    tmp ="무료나눔";
+                }else{
+                    tmp = moneyFormatToWon(Integer.parseInt(posts.getPrice()));
+                }
 
-                photoList = findViewById(R.id.detail_viewPager);
-                circleIndicator = findViewById(R.id.detail_indicator);
                 mImageList = new ArrayList();
-                mImageList.add(posts.getImg());
 
-                Log.d(TAG, "mImageList: "+mImageList);
-             //   viewPagerAdapter = new ViewPagerAdapter(mContext,mImageList);
-          //      photoList.setAdapter(viewPagerAdapter);
-            //    viewPagerAdapter.notifyDataSetChanged();
-            //   circleIndicator.setViewPager(photoList);
+                if(posts.getImg().length()<=50){
+                    mImageList.add(posts.getImg());
+                }else if(posts.getImg().length()<=100){
+                    String str = posts.getImg();
+                    String str2 = str.replace("[", "&");
+                    String gubun[] = str2.split("&");
+                    String gubun1[] = gubun[1].split(",");
 
+                    String str3 = gubun1[1].replace("]","&");
+                    String gubun2[] =str3.split("&");
+
+                    mImageList.add(gubun1[0]);
+                    mImageList.add(gubun2[0]);
+                }else if(posts.getImg().length()<=150){
+                    String str = posts.getImg();
+                    String str2 = str.replace("[", "&");
+                    String gubun[] = str2.split("&");
+                    String gubun1[] = gubun[1].split(",");
+
+                    String str3 = gubun1[2].replace("]", "&");
+                    String gubun2[] =str3.split("&");
+
+                    mImageList.add(gubun1[0]);
+                    mImageList.add(gubun1[1]);
+                    mImageList.add(gubun2[0]);
+                }else if(posts.getImg().length()<=200){
+                    String str = posts.getImg();
+                    String str2 = str.replace("[", "&");
+                    String gubun[] = str2.split("&");
+                    String gubun1[] = gubun[1].split(",");
+
+                    String str3 = gubun1[3].replace("]", "&");
+                    String gubun2[] =str3.split("&");
+
+                    mImageList.add(gubun1[0]);
+                    mImageList.add(gubun1[1]);
+                    mImageList.add(gubun1[2]);
+                    mImageList.add(gubun2[0]);
+                }else if(posts.getImg().length()<=250){
+                    String str = posts.getImg();
+                    String str2 = str.replace("[", "&");
+                    String gubun[] = str2.split("&");
+                    String gubun1[] = gubun[1].split(",");
+
+                    String str3 = gubun1[4].replace("]", "&");
+                    String gubun2[] =str3.split("&");
+                    mImageList.add(gubun1[0]);
+                    mImageList.add(gubun1[1]);
+                    mImageList.add(gubun1[2]);
+                    mImageList.add(gubun1[3]);
+                    mImageList.add(gubun2[0]);
+                }
+
+                Log.d(TAG, "post: "+mImageList);
+
+             photoList = findViewById(R.id.detail_viewPager);
+             Log.d(TAG, "mImageList: "+mImageList);
+            viewPagerAdapter = new ViewPagerAdapter(DetailActivity.this,mImageList);
+                 photoList.setAdapter(viewPagerAdapter);
+
+               circleIndicator= findViewById(R.id.detail_indicator);
+                viewPagerAdapter.notifyDataSetChanged();
+                circleIndicator.setViewPager(photoList);
 
                 tvNickName.setText(posts.getUser().getNickName());
                 tvAddress.setText(posts.getDong());
@@ -117,7 +194,12 @@ tvPrice = findViewById(R.id.detail_tv_price);
                 tvContent.setText(posts.getContent());
                 tvViewCount.setText(posts.getCount()+"");
                 tvAnotherNick.setText(posts.getUser().getNickName());
-                tvPrice.setText(posts.getPrice()+"원");
+
+                if(tmp.equals("무료나눔")){
+                    tvPrice.setText(tmp);
+                }else{
+                    tvPrice.setText(tmp+"원");
+                }
 
 
             }
@@ -126,5 +208,10 @@ tvPrice = findViewById(R.id.detail_tv_price);
 
             }
         });
+    }
+
+    public static String moneyFormatToWon(int inputMoney) {
+        DecimalFormat decimalFormat = new DecimalFormat("#,##0");
+        return decimalFormat.format(inputMoney);
     }
 }

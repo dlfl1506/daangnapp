@@ -2,6 +2,7 @@ package com.cos.daangnapp.main.home.detail.adapter;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +19,12 @@ import java.util.ArrayList;
 public class ViewPagerAdapter extends PagerAdapter {
 
     // LayoutInflater 서비스 사용을 위한 Context 참조 저장.
-    private Context mContext = null ;
+    private Context mContext;
     private ArrayList<String> photoList;
     private static final String TAG = "ViewPagerAdapter";
-    public ViewPagerAdapter() {
-
-    }
 
     public ViewPagerAdapter(Context mContext, ArrayList<String> photoList) {
-        this.mContext = mContext;
+        this.mContext= mContext;
         this.photoList = photoList;
     }
 
@@ -34,11 +32,11 @@ public class ViewPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.detail_image, null);
-
         ImageView mImageView = view.findViewById(R.id.detail_iv);
-        Glide.with(mContext).load(photoList.get(position)).into(mImageView);
-        // 뷰페이저에 추가.
-        container.addView(view) ;
+
+        Log.d(TAG, "instantiateItem: "+photoList);
+      Glide.with(mContext).load(photoList.get(position).trim()).into(mImageView);
+      container.addView(view);
 
         return view ;
     }
@@ -52,7 +50,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public int getCount() {
         // 전체 페이지 수는 10개로 고정.
-        return 10;
+        return photoList.size();
     }
 
     @Override

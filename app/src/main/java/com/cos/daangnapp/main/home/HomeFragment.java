@@ -63,7 +63,6 @@ public class HomeFragment extends Fragment  {
         String dong = pref.getString("dong",null);
         String gu = pref.getString("gu", null);
 
-
         String[] LocationList = {
                 dong,"다른 동네 선택"
         };

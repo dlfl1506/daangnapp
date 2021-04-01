@@ -78,21 +78,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
-                <ImageView
-                    android:id="@+id/home_iv_reply"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="2dp"
-                    android:src="@drawable/ic_feed_reply_outline_18" />
 
-                <TextView
-                    android:id="@+id/home_tv_reply"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="2dp"
-                    android:text="10" />
+
 
                 <ImageView
                     android:id="@+id/home_iv_interest"
