@@ -26,6 +26,7 @@ import com.cos.daangnapp.login.model.UserRespDto;
 import com.cos.daangnapp.main.MainActivity;
 import com.cos.daangnapp.profileedit.ProfileEdit;
 import com.cos.daangnapp.retrofitURL;
+import com.cos.daangnapp.sale.SalesActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,6 +40,7 @@ public class ProfileFragment  extends Fragment {
     private  LinearLayout mBtnLogin, mTvSetting, mBtnLocation, mBtnChangeLocation;
     private TextView mTvNickname, mTvLocation,mTvCode;
     private  ImageView IvPhoto,IvPhotoEdit,mIvSetting, mIvChange;
+    private LinearLayout btnSaleList;
     private Button mBtnMyProfile;
     private retrofitURL retrofitURL;
     private ProfileService profileService= retrofitURL.retrofit.create(ProfileService .class);
@@ -61,11 +63,11 @@ private String photo;
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         mBtnLogin = view.findViewById(R.id.profile_btn_login);
-
+        mBtnMyProfile = view.findViewById(R.id.profile_btn_my_profile);
         mTvNickname = view.findViewById(R.id.profile_tv_nickname);
         mTvLocation = view.findViewById(R.id.profile_tv_location);
         mTvCode = view.findViewById(R.id.profile_tv_code);
-
+        btnSaleList = view.findViewById(R.id.btn_saleList);
         mTvSetting = view.findViewById(R.id.profile_tv_setting);
         mIvSetting = view.findViewById(R.id.profile_iv_setting);
         IvPhoto = view.findViewById(R.id.profile_iv_photo);
@@ -109,6 +111,7 @@ private String photo;
                 public void onResponse(Call<CMRespDto<UserRespDto>> call, Response<CMRespDto<UserRespDto>> response) {
                     CMRespDto<UserRespDto> cmRespDto = response.body();
                     UserRespDto user= cmRespDto.getData();
+
                     try {
                         mTvNickname.setText(user.getNickName());
                         mTvCode.setText(user.getId()+"");
@@ -126,7 +129,24 @@ private String photo;
                     } catch (Exception e) {
                         Log.d(TAG, "null");
                     }
+
+
+                    mBtnMyProfile.setOnClickListener(v -> {
+                        Intent intent = new Intent(activity, UserProfileActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.putExtra("userId",user.getId());
+                        startActivity(intent);
+                    });
+
+
+                    btnSaleList.setOnClickListener(v -> {
+                        Intent intent = new Intent(activity, SalesActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.putExtra("userId",user.getId());
+                        startActivity(intent);
+                    });
                 }
+
                 @Override
                 public void onFailure(Call<CMRespDto<UserRespDto>> call, Throwable t) {
                     Log.d(TAG, "getUser실패");

@@ -41,7 +41,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
         Log.d(TAG, "onCreateViewHolder: ");
         LayoutInflater inflater =(LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);   // main엑티비티에 연결할 객체를 생성해주는 인플레이터
         View view = inflater.inflate(R.layout.product_ltem,parent,false);
-
         return new MyViewHolder(view);
     }
 
@@ -70,6 +69,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
             tvFavorite = itemView.findViewById(R.id.home_tv_interest);
             productItem= itemView.findViewById(R.id.product_item);
 
+         /*   photo.setColorFilter(Color.parseColor("#FF3E3B3B"), PorterDuff.Mode.MULTIPLY);
+            productItem.setBackgroundColor(Color.parseColor("#FF3E3B3B"));
+*/
         }
         public void setItem(Context mContext, PostRespDto postRespDto){
             try {
@@ -79,7 +81,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
                 }else {
                     tmp = moneyFormatToWon(Integer.parseInt(postRespDto.getPrice()));
                 }
-
                 Glide.with(mContext).load(postRespDto.getImages().get(0).getUri()).into(photo);
                 photo.setClipToOutline(true);
                 photo.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -95,9 +96,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
                 tvFavorite.setText(postRespDto.getFavorite()+"");
 
                 productItem.setOnClickListener(v -> {
-                    Intent intent = new Intent(mContext, DetailActivity.class);
+                    Intent intent = new Intent(v.getContext(), DetailActivity.class);
                     intent.putExtra("postId", postRespDto.getId());
-                    mContext.startActivity(intent);
+                    v.getContext().startActivity(intent);
                 });
             } catch (Exception e) {
                 Log.d(TAG, "null");

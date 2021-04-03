@@ -48,9 +48,10 @@ public class ProfileEdit extends AppCompatActivity {
         setContentView(R.layout.activity_profile_edit);
 
         Intent intent = getIntent();
+        String photo = intent.getStringExtra("photo");
         int userId = intent.getIntExtra("userId",0);
         String nickName= intent.getStringExtra("nickName");
-        String photo = intent.getStringExtra("photo");
+
         ib_back = findViewById(R.id.profile_btn_back);
         profileImage = findViewById(R.id.profile_iv_profile_image);
         tvSubmit = findViewById(R.id.profile_btn_submit);
@@ -109,12 +110,21 @@ public class ProfileEdit extends AppCompatActivity {
                             uri = item.getUri();
                             System.out.println("uri : " + uri);
                             mUriArrayList.add(uri);
+
+                            if(mClipData.getItemCount() ==0) {
+                                Intent intent = getIntent();
+                                String photo = intent.getStringExtra("photo");
+                                userUpdateReqDto.setPhoto(photo);
+                                userUpdateReqDto.setNickName(etNickname.getText().toString());
+                            }else{
                                 userUpdateReqDto.setPhoto(uri.toString());
                                 userUpdateReqDto.setNickName(etNickname.getText().toString());
                                 profileImage.setImageURI(uri);
                                 profileImage.setBackground(new ShapeDrawable(new OvalShape()));
                                 profileImage.setClipToOutline(true);
                                 profileImage.setScaleType(ImageView.ScaleType.FIT_XY);
+                            }
+
 
                         }
                     }

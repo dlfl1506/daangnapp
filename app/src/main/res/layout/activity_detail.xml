@@ -86,6 +86,7 @@
             </FrameLayout>
 
             <LinearLayout
+                android:id="@+id/layout_userprofile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -108,7 +109,7 @@
                         android:id="@+id/detail_nickname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="판매자 닉네임"
+                        android:text="로딩중화면"
                         android:textColor="@android:color/black"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -197,7 +198,7 @@
                     android:id="@+id/detail_tv_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="촬영용 당근 샘플 판매합니다 (실내에서 촬영시 착용)"
+                    android:text="로딩중화면"
                     android:textColor="@android:color/black"
                     android:textSize="17sp"
                     android:textStyle="bold" />
@@ -228,9 +229,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="촬영할때 스튜디어에서만 착용한 샘플들이에요
-            \n실외에서는 착용하지 않아서 닳거나 하진 않았는데 \n바닥이 깨끗하진 않아요 한켤레씩만 있고
-            \n사이즈는 대부분 240입니다."
+                    android:text="로딩중화면"
                     android:textColor="@android:color/black" />
 
                 <LinearLayout
@@ -276,72 +275,82 @@
                 android:layout_marginRight="15dp"
                 android:background="@color/colorGray" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:text="이 게시글 신고하기"
-                android:textColor="@android:color/black"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="@color/colorGray" />
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="@color/colorGray" />
-
             <LinearLayout
+                android:id="@+id/reportAndProduct"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
 
                 <TextView
-                    android:id="@+id/detail_tv_nickname_another"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Jerrry"
+                    android:layout_margin="20dp"
+                    android:text="이 게시글 신고하기"
                     android:textColor="@android:color/black"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="님의 판매 상품"
-                    android:textColor="@android:color/black"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/colorGray" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
 
-                <Button
-                    android:layout_width="wrap_content"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/colorGray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:text="모두보기" />
+                    android:layout_margin="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/detail_tv_nickname_another"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Jerrry"
+                        android:textColor="@android:color/black"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="님의 판매 상품"
+                        android:textColor="@android:color/black"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="모두보기"
+                        android:textColor="@color/black"
+                        android:backgroundTint="@color/colorGray"
+                        />
+                </LinearLayout>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
             </LinearLayout>
 
-            <GridView
-                android:id="@+id/product_information_gridview"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:gravity="center"
-                android:numColumns="2">
-            </GridView>
         </LinearLayout>
     </ScrollView>
 
@@ -403,7 +412,7 @@
                 android:layout_weight="1" />
 
             <Button
-                android:id="@+id/product_information_btn_purchase"
+                android:id="@+id/detail_btn_chat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

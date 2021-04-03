@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         switch (view.getId()) {
             case R.id.main_btn_home:
                 moveHome();
+                fabAdd.setVisibility(View.VISIBLE);
                 break;
             case R.id.main_btn_category:
             //    moveCategory();
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 break;
             case R.id.main_btn_profile:
                  moveProfile();
+                fabAdd.setVisibility(View.INVISIBLE);
                 break;
             default:
                 break;

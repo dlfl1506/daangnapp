@@ -68,7 +68,6 @@ public class WritingAdapter extends RecyclerView.Adapter<WritingAdapter.MyViewHo
             IvImage =itemView.findViewById(R.id.writing_iv_upload_image);
             removeImage = itemView.findViewById(R.id.iv_remove);
             IvImage.setClipToOutline(true);
-
         }
         public void setItem(Uri uri) {
           IvImage.setImageURI(uri);
