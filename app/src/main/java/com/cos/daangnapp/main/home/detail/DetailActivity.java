@@ -31,12 +31,14 @@ import androidx.viewpager.widget.ViewPager;
 import com.cos.daangnapp.CMRespDto;
 import com.cos.daangnapp.R;
 import com.cos.daangnapp.main.MainActivity;
+import com.cos.daangnapp.main.chat.ChatActivity;
 import com.cos.daangnapp.main.home.detail.adapter.GridViewAdapter;
 import com.cos.daangnapp.main.home.detail.adapter.ViewPagerAdapter;
 import com.cos.daangnapp.main.home.detail.service.DetailService;
 import com.cos.daangnapp.main.home.model.PostRespDto;
-import com.cos.daangnapp.retrofitURL;
+import com.cos.daangnapp.main.profile.ProfileService;
 import com.cos.daangnapp.main.profile.UserProfileActivity;
+import com.cos.daangnapp.retrofitURL;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -61,9 +63,11 @@ public class DetailActivity extends AppCompatActivity {
     private TextView tvNickName,tvAddress,tvTitle,tvTime,tvContent,tvCategori,tvFavorite,tvViewCount,tvAnotherNick,tvPrice;
     private retrofitURL retrofitURL;
     private DetailService detailService= retrofitURL.retrofit.create(DetailService .class);
+    private ProfileService profileService= retrofitURL.retrofit.create(ProfileService .class);
     private RecyclerView rvProduct;
     private LinearLayout reportAndProduct,layout_userprofile;
     private Button detail_btn_chat;
+    private ImageButton btnFavorite;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,10 +75,10 @@ public class DetailActivity extends AppCompatActivity {
 
                 init();
                 initSetting();
+
     }
 
     public  void init(){
-
         rvProduct =findViewById(R.id.rv_product);
 profile = findViewById(R.id.detail_iv_profile);
 tvNickName = findViewById(R.id.detail_nickname);
@@ -94,11 +98,13 @@ tvFavorite = findViewById(R.id.detail_tv_favorite);
         reportAndProduct = findViewById(R.id.reportAndProduct);
         layout_userprofile = findViewById(R.id.layout_userprofile);
         detail_btn_chat = findViewById(R.id.detail_btn_chat);
+
+        btnFavorite = findViewById(R.id.btn_favorite);
     }
     public void initSetting(){
+
         Intent intent = getIntent();
         postId = intent.getIntExtra("postId", 1);
-
         getpost(postId);
 
         mBack.setImageResource(R.drawable.home_as_up);
@@ -109,9 +115,10 @@ tvFavorite = findViewById(R.id.detail_tv_favorite);
         mMore.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_IN);
 
 
+        btnFavorite.setOnClickListener(v -> {
+            btnFavorite.setImageResource(R.drawable.ic_baseline_favorite_24);
+        });
     }
-
-
 
     public void productInformationOnClick(View view) {
         switch (view.getId()) {
@@ -122,15 +129,12 @@ tvFavorite = findViewById(R.id.detail_tv_favorite);
                 //share();
                 break;
             case R.id.product_information_iv_more:
-
-                break;
-            case R.id.detail_btn_chat:
-          //      purchase(productNo);
                 break;
             default:
                 break;
         }
     }
+
 
     public void getpost(int id){
         Call<CMRespDto<PostRespDto>> call = detailService.getpost(id);
@@ -190,17 +194,18 @@ tvFavorite = findViewById(R.id.detail_tv_favorite);
 
                 SharedPreferences pref =getSharedPreferences("pref", Context.MODE_PRIVATE);
                 int userId = pref.getInt("userId",0);
+
                 if(userId ==posts.getUser().getId()){
                     reportAndProduct.setVisibility(View.INVISIBLE);
                 }else{
                     reportAndProduct.setVisibility(View.VISIBLE);
                 }
 
-                if(userId ==posts.getUser().getId()){
+            /*    if(userId ==posts.getUser().getId()){
                     detail_btn_chat.setEnabled(false);
                 }else{
                     detail_btn_chat.setEnabled(true);
-                }
+                }*/
                 mMore.setOnClickListener(v -> {
                     if(userId ==posts.getUser().getId()){
                         PopupMenu popup = new PopupMenu(DetailActivity.this ,mMore );
@@ -272,6 +277,16 @@ tvFavorite = findViewById(R.id.detail_tv_favorite);
                     Intent intent = new Intent(DetailActivity.this, UserProfileActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intent.putExtra("userId",posts.getUser().getId());
+                    startActivity(intent);
+                });
+
+
+                detail_btn_chat.setOnClickListener(v -> {
+                    Intent intent = new Intent(DetailActivity.this, ChatActivity.class);
+                    intent.putExtra("userId",userId);
+                    intent.putExtra("postId",posts.getId());
+                    intent.putExtra("nickName",posts.getUser().getNickName());
+                    intent.putExtra("uri",posts.getUser().getPhoto());
                     startActivity(intent);
                 });
 

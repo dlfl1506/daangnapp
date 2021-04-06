@@ -89,7 +89,6 @@ public class GridViewAdapter extends RecyclerView.Adapter<GridViewAdapter.MyView
             gridviewItem.setOnClickListener(v -> {
                 Intent intent = new Intent(v.getContext(), DetailActivity.class);
                 intent.putExtra("postId", postRespDto.getId());
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 v.getContext().startActivity(intent);
             });
         }

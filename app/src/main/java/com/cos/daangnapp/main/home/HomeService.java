@@ -13,4 +13,7 @@ public interface HomeService {
 
     @GET("post/gu")
     Call<CMRespDto<List<PostRespDto>>> getposts(@Query("gu") String gu);
+
+    @GET("post/gu/keyword")
+    Call<CMRespDto<List<PostRespDto>>> searchposts(@Query("gu") String gu,@Query("keyword") String keyword);
 }

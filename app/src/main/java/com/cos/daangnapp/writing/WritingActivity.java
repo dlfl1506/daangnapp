@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,9 +26,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cos.daangnapp.CMRespDto;
 import com.cos.daangnapp.R;
 import com.cos.daangnapp.main.MainActivity;
+import com.cos.daangnapp.main.home.model.ImageRespDto;
 import com.cos.daangnapp.retrofitURL;
 import com.cos.daangnapp.writing.adapter.WritingAdapter;
-import com.cos.daangnapp.main.home.model.ImageRespDto;
 import com.cos.daangnapp.writing.model.ImageSaveReqdto;
 import com.cos.daangnapp.writing.model.PostSaveReqDto;
 import com.cos.daangnapp.writing.model.PostSaveRespDto;
@@ -50,6 +51,7 @@ public class WritingActivity extends AppCompatActivity  {
     private PostService postService= retrofitURL.retrofit.create(PostService .class);
     private PostSaveReqDto postSaveReqDto = new PostSaveReqDto();
     private ImageSaveReqdto imageSaveReqdto = new ImageSaveReqdto();
+    private ImageButton btnBack;
     private static final String TAG = "WritingActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class WritingActivity extends AppCompatActivity  {
         mTvCategories = findViewById(R.id.writing_tv_categories);
         mTvCategoryNo = findViewById(R.id.writing_tv_categoryNo);
         rvImage=findViewById(R.id.writing_rv);
+        btnBack = findViewById(R.id.writing_btn_back);
 
         mEtPrice.addTextChangedListener(new TextWatcher() {
             @Override
@@ -177,13 +180,16 @@ public class WritingActivity extends AppCompatActivity  {
 
     public void uploadImage() {
 
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-      //  intent.setAction(Intent.ACTION_GET_CONTENT);
+   //   intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_MULTIPLE);
 
         System.out.println("사진업로드");
+
+
+
     }
 
 
@@ -212,7 +218,7 @@ public class WritingActivity extends AppCompatActivity  {
                         ClipData mClipData = data.getClipData();
                             for (int i = 0; i < mClipData.getItemCount(); i++) {
                                 ClipData.Item item = mClipData.getItemAt(i);
-                                uri = item.getUri();
+                                  uri = item.getUri();
                                 mUriArrayList.add(uri);
                             }
                        rvImage.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));

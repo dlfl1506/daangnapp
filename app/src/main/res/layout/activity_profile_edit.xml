@@ -84,4 +84,14 @@
         android:textColor="@android:color/black"
         android:textSize="20sp"></EditText>
 
+
+    <Button
+        android:id="@+id/btn_profile_remove"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#FF9800"
+        android:layout_gravity="center"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:textStyle="bold"
+        android:text="프로필사진 삭제"/>
 </LinearLayout>

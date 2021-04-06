@@ -48,9 +48,12 @@ public class AuthActivity extends AppCompatActivity {
             if(etPhoneNumber.getText().toString().equals("")){
                 Toast.makeText(getApplicationContext(),"휴대폰 번호를 입력해주세요.",Toast.LENGTH_SHORT).show();
             }else {
-                AuthCodeSearch(etPhoneNumber.getText().toString());
+                String str = etPhoneNumber.getText().toString();
+                String gubun[] = str.split("-");
+                String phoneNumber = gubun[0]+gubun[1]+gubun[2];
+                AuthCodeSearch(phoneNumber);
                 Intent intent = new Intent(AuthActivity.this, LoginActivity.class);
-                intent.putExtra("phoneNumber", etPhoneNumber.getText().toString());
+                intent.putExtra("phoneNumber", phoneNumber);
                 startActivity(intent);     // intent 타입을 넣어야함  !!
                 AuthActivity.this.finish();
             }
@@ -122,7 +125,10 @@ public class AuthActivity extends AppCompatActivity {
         call.enqueue(new Callback<CMRespDto<AuthRespDto>>() {
             @Override
             public void onResponse(Call<CMRespDto<AuthRespDto>> call, Response<CMRespDto<AuthRespDto>> response) {
-                AuthReqDto authReqDto = new AuthReqDto(etPhoneNumber.getText().toString(),numberGen(4,2));
+                String str = etPhoneNumber.getText().toString();
+                String gubun[] = str.split("-");
+                String phoneNumber = gubun[0]+gubun[1]+gubun[2];
+                AuthReqDto authReqDto = new AuthReqDto(phoneNumber,numberGen(4,2));
 
                 CMRespDto<AuthRespDto> cmRespDto = response.body();
                 AuthRespDto authRespDto = cmRespDto.getData();

@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.cos.daangnapp.R;
+import com.cos.daangnapp.main.chat.ChatFragment;
 import com.cos.daangnapp.main.home.HomeFragment;
 import com.cos.daangnapp.main.profile.ProfileFragment;
 import com.cos.daangnapp.writing.WritingActivity;
@@ -29,9 +30,11 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     private FloatingActionButton fabAdd, fabJoongo, fabDongne;
     private HomeFragment mHomeFragment;
     private ProfileFragment mProfileFragment;
+    private ChatFragment mChatFragment;
     String[] permission_list = {
-            Manifest.permission.READ_EXTERNAL_STORAGE
+            Manifest.permission.READ_EXTERNAL_STORAGE,
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         mHomeFragment = new HomeFragment();
         mProfileFragment = new ProfileFragment();
+        mChatFragment = new ChatFragment();
         moveHome();
     }
 
@@ -60,7 +64,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
             //    moveWriting();
                 break;
             case R.id.main_btn_chat:
-          //      moveChat();
+                moveChat();
                 break;
             case R.id.main_btn_profile:
                  moveProfile();
@@ -77,6 +81,10 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         getSupportFragmentManager().beginTransaction().replace(R.id.container,mProfileFragment).commit();
     }
 
+    public void moveChat() {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, mChatFragment).commit();
+    }
+
     public void checkPermission(){
         //현재 안드로이드 버전이 6.0미만이면 메서드를 종료한다.
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
@@ -91,6 +99,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 requestPermissions(permission_list,0);
             }
         }
+
     }
 
     @Override
@@ -147,9 +156,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
             case R.id.fab_joongo:
                 anim();
                 Intent intent = new Intent(MainActivity.this, WritingActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                MainActivity.this.finish();
                 break;
             case R.id.fab_dongne:
                 anim();

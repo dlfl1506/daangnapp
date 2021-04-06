@@ -255,6 +255,7 @@ public class LoginActivity extends AppCompatActivity  {
                     SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putInt("userId", userRespDto.getId());
+                    editor.putString("myNick", userRespDto.getNickName());
                     editor.commit();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

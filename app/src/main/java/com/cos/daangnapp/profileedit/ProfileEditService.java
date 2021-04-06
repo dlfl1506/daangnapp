@@ -15,6 +15,4 @@ public interface ProfileEditService {
     @PUT("user/{id}")
     Call<CMRespDto<UserRespDto>> update(@Path("id")int id, @Body UserUpdateReqDto userUpdateReqDto);
 
-    @PUT("user/{id}")
-    Call<CMRespDto<UserRespDto>> getuser(@Path("id")int id);
 }

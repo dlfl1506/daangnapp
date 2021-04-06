@@ -89,6 +89,7 @@ public class NicknameActivity extends AppCompatActivity {
                 SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putInt("userId", userRespDto.getId());
+                editor.putString("myNick", userRespDto.getNickName());
                 editor.commit();
             }
             @Override

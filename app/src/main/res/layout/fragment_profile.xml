@@ -132,9 +132,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="20dp"
-                    android:background="@drawable/border_background"
+                    android:backgroundTint="#FF9800"
                     android:text="프로필 보기"
-                    android:textColor="@android:color/black"
+                    android:textColor="@android:color/white"
                     android:textStyle="bold" />
             </LinearLayout>
 

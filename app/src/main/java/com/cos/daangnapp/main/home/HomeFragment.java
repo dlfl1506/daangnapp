@@ -4,12 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -40,6 +44,8 @@ public class HomeFragment extends Fragment  {
     private Spinner spinner;
     private ArrayList<PostRespDto> postRespDtos = new ArrayList<>();
     private retrofitURL retrofitURL;
+    private ImageView btnSearch,IvSearch,IvFilter,IvNotice;
+    private EditText etSearch;
     private HomeService homeService= retrofitURL.retrofit.create(HomeService .class);
 
     @Override
@@ -91,6 +97,46 @@ public class HomeFragment extends Fragment  {
         LinearLayoutManager manager = new LinearLayoutManager(activity,RecyclerView.VERTICAL,false);
         postList.setLayoutManager(manager);
         getposts(gu);
+
+    btnSearch = view.findViewById(R.id.btn_search);
+    IvFilter = view.findViewById(R.id.iv_filter);
+    IvNotice = view.findViewById(R.id.iv_notice);
+
+
+    IvSearch = view.findViewById(R.id.iv_search);
+    etSearch = view.findViewById(R.id.et_post_search);
+
+
+    etSearch.addTextChangedListener(new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            searchPosts(gu,s.toString());
+        }
+    });
+
+    IvSearch.setVisibility(View.INVISIBLE);
+    etSearch .setVisibility(View.INVISIBLE);
+
+    btnSearch.setOnClickListener(v -> {
+        btnSearch.setVisibility(view.INVISIBLE);
+        IvFilter.setVisibility(view.INVISIBLE);
+        IvNotice.setVisibility(view.INVISIBLE);
+
+        IvSearch.setVisibility(view.VISIBLE);
+        etSearch.setVisibility(view.VISIBLE);
+    });
+
+
         return view;
     }
     public void getposts(String gu){
@@ -115,5 +161,21 @@ public class HomeFragment extends Fragment  {
         });
     }
 
-
+    public void searchPosts(String gu,String keyword){
+        Call<CMRespDto<List<PostRespDto>>> call =homeService.searchposts(gu,keyword);
+        call.enqueue(new Callback<CMRespDto<List<PostRespDto>>>() {
+            @Override
+            public void onResponse(Call<CMRespDto<List<PostRespDto>>> call, Response<CMRespDto<List<PostRespDto>>> response) {
+                CMRespDto<List<PostRespDto>> cmRespDto = response.body();
+                List<PostRespDto> posts = cmRespDto.getData();
+                Log.d(TAG, "posts: " +posts);
+                homeAdapter = new HomeAdapter(posts,activity);
+                postList.setAdapter(homeAdapter);
+            }
+            @Override
+            public void onFailure(Call<CMRespDto<List<PostRespDto>>> call, Throwable t) {
+                Log.d(TAG, "onFailure: search 실패 !!");
+            }
+        });
+    }
 }

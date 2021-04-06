@@ -31,7 +31,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
 
     public HomeAdapter(List<PostRespDto> mItemsList, Context mContext) {
         this.mItemsList = mItemsList;
-        this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.mContext = mContext;
     }
 
@@ -81,7 +81,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
                 }else {
                     tmp = moneyFormatToWon(Integer.parseInt(postRespDto.getPrice()));
                 }
-                Glide.with(mContext).load(postRespDto.getImages().get(0).getUri()).into(photo);
+              Glide.with(mContext).load(postRespDto.getImages().get(0).getUri()).into(photo);
                 photo.setClipToOutline(true);
                 photo.setScaleType(ImageView.ScaleType.FIT_XY);
 
