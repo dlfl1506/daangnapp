@@ -46,11 +46,12 @@ List<Location> 근처주소검색(double entX,double entY);
 <img src= "https://user-images.githubusercontent.com/74044212/113665071-ce702580-96e7-11eb-89ea-7d24004cbbbb.gif" width="300px" height="500px" />
 
 ##### 문자보내는건 https://console.coolsms.co.kr/ 이 사이트를 이용했습니다.
-##### 문자인증받기 버튼을 누를시 문자를 보내면서 4자리의 난수 인증코드를 보내고 드 인증코드를 Auth 디비에 저장하였습니다. 
+##### 문자인증받기 버튼을 누를시 문자를 보내면서 랜덤함수를 사용해 4자리의 난수 인증코드를 보내고 인증코드를 Auth 디비에 저장하였습니다. 
 ##### (이미 인증코드를 받았으면 SAVE 말고 UPDATE 시킴)
 <img src= "https://user-images.githubusercontent.com/74044212/113665471-7dacfc80-96e8-11eb-9cf1-1f588bc099a8.png" width="200px" height="200px" />
 
-##### 그리고 다른 스레드를 써서 40초후에 삭제하게하였고 (인증코드 만료) 디비에 있는 인증코드와 일치할시 닉네임 엑티비티로 이동하게하였습니다.
+##### 그리고 다른 스레드를 써서 40초후에 삭제하게하였고 (인증코드 만료) 
+##### 디비에 있는 인증코드와 일치할시 닉네임 엑티비티로 이동하게하였습니다.
 ##### (이미 유저가있으면 메인엑티비티)
 
 ### 3. 게시물 구별 로 뿌려주기,다른동네선택, 게시물검색기능 
@@ -59,6 +60,8 @@ List<Location> 근처주소검색(double entX,double entY);
 
 
 ### 4. 게시물쓰기
+
+
 <img src= "https://user-images.githubusercontent.com/74044212/113666124-b26d8380-96e9-11eb-8988-fcd2b341af7b.gif" width="300px" height="500px" />
 
 ### 5. 게시물 상세보기 및 판매자의 다른상품 상세보기
