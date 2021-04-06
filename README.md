@@ -93,3 +93,6 @@ List<Location> 근처주소검색(double entX,double entY);
 <img src= "https://user-images.githubusercontent.com/74044212/113666820-d2ea0d80-96ea-11eb-8c62-36ab3790be1f.jpg" width="300px" height="500px" />
 <img src= "https://user-images.githubusercontent.com/74044212/113666834-d8475800-96ea-11eb-8c84-968c40ebff5f.jpg" width="300px" height="500px" />
 
+
+## 시연영상
+
