@@ -67,7 +67,7 @@ List<Location> 근처주소검색(double entX,double entY);
 
 ### 6. 내 게시물 수정,삭제
 
-<img src= "https://user-images.githubusercontent.com/74044212/113666487-4e978a80-96ea-11eb-9ba8-cc4d6f110bcd.gif" width="300px" height="500px" />
+<img src= "https://user-images.githubusercontent.com/74044212/113669283-7ee12800-96ee-11eb-97c1-9b3c449c5998.gif" width="300px" height="500px" />
 
 ### 7. 유저 프로필 ,닉네임 변경
 
