@@ -64,6 +64,9 @@ List<Location> 근처주소검색(double entX,double entY);
 
 <img src= "https://user-images.githubusercontent.com/74044212/113666124-b26d8380-96e9-11eb-8988-fcd2b341af7b.gif" width="300px" height="500px" />
 
+##### 완료버튼을 누르면 post 테이블에 post 요청을 함 과 동시에 Firebase storage에 사진을 저장했습니다.
+#### 그리고 스토리지에 저장한 파일을 가져와서 uri로변환해주고 image 테이블에 post요청을 했습니다.
+
 ### 5. 게시물 상세보기 및 판매자의 다른상품 상세보기
 
 <img src= "https://user-images.githubusercontent.com/74044212/113666461-48a1a980-96ea-11eb-88d2-790373277efd.gif" width="300px" height="500px" />
