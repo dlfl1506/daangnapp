@@ -2,7 +2,6 @@ package com.cos.daangnapp.sale;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.cos.daangnapp.R;
 import com.cos.daangnapp.main.home.detail.DetailActivity;
 import com.cos.daangnapp.main.home.model.PostRespDto;
@@ -76,10 +76,14 @@ public class SaleAdapter extends RecyclerView.Adapter<SaleAdapter.MyViewHolder> 
                 tmp = moneyFormatToWon(Integer.parseInt(postRespDto.getPrice()));
             }
 
-            Uri uri = Uri.parse(postRespDto.getImages().get(0).getUri());
-            ivImage.setImageURI(uri);
+            Glide.with(mContext).load(postRespDto.getImages().get(0).getUri()).into(ivImage);
             ivImage.setClipToOutline(true);
             ivImage.setScaleType(ImageView.ScaleType.FIT_XY);
+
+            /*Uri uri = Uri.parse(postRespDto.getImages().get(0).getUri());
+            ivImage.setImageURI(uri);
+            ivImage.setClipToOutline(true);
+            ivImage.setScaleType(ImageView.ScaleType.FIT_XY);*/
 
             tvTitle.setText(postRespDto.getTitle());
             tvaddress.setText(postRespDto.getDong());

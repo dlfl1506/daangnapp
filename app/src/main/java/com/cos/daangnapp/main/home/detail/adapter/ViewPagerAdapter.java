@@ -34,11 +34,8 @@ public class ViewPagerAdapter extends PagerAdapter {
         View view = inflater.inflate(R.layout.detail_image, null);
         ImageView mImageView = view.findViewById(R.id.detail_iv);
         Log.d(TAG, "instantiateItem: "+photoList);
-        Log.d(TAG, "instantiateItem: "+position);
-        
 
-
-   Glide.with(mContext).load(photoList.get(position)).into(mImageView);
+        Glide.with(mContext).load(photoList.get(position)).into(mImageView);
         container.addView(view);
 
         return view ;

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.cos.daangnapp.CMRespDto;
 import com.cos.daangnapp.R;
 import com.cos.daangnapp.login.model.UserRespDto;
@@ -111,7 +111,6 @@ private String photo;
                 public void onResponse(Call<CMRespDto<UserRespDto>> call, Response<CMRespDto<UserRespDto>> response) {
                     CMRespDto<UserRespDto> cmRespDto = response.body();
                     UserRespDto user= cmRespDto.getData();
-
                     try {
                         mTvNickname.setText(user.getNickName());
                         mTvCode.setText(user.getId()+"");
@@ -119,12 +118,15 @@ private String photo;
                         if(user.getPhoto()==null){
 
                         }else{
-                            photo=user.getPhoto();
-                       Uri uri = Uri.parse(user.getPhoto());
+                            Glide.with(activity).load(user.getPhoto()).into(IvPhoto);
+                            IvPhoto.setClipToOutline(true);
+                             IvPhoto.setBackground(new ShapeDrawable(new OvalShape()));
+                            IvPhoto.setScaleType(ImageView.ScaleType.FIT_XY);
+                  /*     Uri uri = Uri.parse(user.getPhoto());
                             IvPhoto.setImageURI(uri);
                             IvPhoto.setBackground(new ShapeDrawable(new OvalShape()));
                             IvPhoto.setClipToOutline(true);
-                            IvPhoto.setScaleType(ImageView.ScaleType.FIT_XY);
+                            IvPhoto.setScaleType(ImageView.ScaleType.FIT_XY);*/
                         }
                     } catch (Exception e) {
                         Log.d(TAG, "null");

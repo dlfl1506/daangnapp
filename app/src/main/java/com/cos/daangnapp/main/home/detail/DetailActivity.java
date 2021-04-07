@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuInflater;
@@ -28,6 +27,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
 import com.cos.daangnapp.CMRespDto;
 import com.cos.daangnapp.R;
 import com.cos.daangnapp.main.MainActivity;
@@ -165,11 +165,15 @@ tvFavorite = findViewById(R.id.detail_tv_favorite);
 
 
                 if(posts.getUser().getPhoto() !=null){
-                    Uri uri = Uri.parse(posts.getUser().getPhoto());
+                    Glide.with(DetailActivity.this).load(posts.getUser().getPhoto()).into(profile);
+                    profile.setClipToOutline(true);
+                    profile.setBackground(new ShapeDrawable(new OvalShape()));
+                    profile.setScaleType(ImageView.ScaleType.FIT_XY);
+                  /*  Uri uri = Uri.parse(posts.getUser().getPhoto());
                     profile.setImageURI(uri);
                     profile.setBackground(new ShapeDrawable(new OvalShape()));
                     profile.setClipToOutline(true);
-                    profile.setScaleType(ImageView.ScaleType.FIT_XY);
+                    profile.setScaleType(ImageView.ScaleType.FIT_XY);*/
                 }
                 tvNickName.setText(posts.getUser().getNickName());
                 tvAddress.setText(posts.getDong());
@@ -189,7 +193,7 @@ tvFavorite = findViewById(R.id.detail_tv_favorite);
 
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(DetailActivity.this,2);
                 rvProduct.setLayoutManager(gridLayoutManager);
-                gridViewadapter = new GridViewAdapter(posts.getUser().getPosts(),mContext);
+                gridViewadapter = new GridViewAdapter(posts.getUser().getPosts(),DetailActivity.this);
                 rvProduct.setAdapter(gridViewadapter);
 
                 SharedPreferences pref =getSharedPreferences("pref", Context.MODE_PRIVATE);

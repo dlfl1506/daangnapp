@@ -2,7 +2,6 @@ package com.cos.daangnapp.main.home.detail.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.cos.daangnapp.R;
 import com.cos.daangnapp.main.home.detail.DetailActivity;
 import com.cos.daangnapp.main.home.model.PostRespDto;
@@ -25,11 +25,11 @@ public class GridViewAdapter extends RecyclerView.Adapter<GridViewAdapter.MyView
 
     private static final String TAG = "GridViewadapter";
     private List<PostRespDto> posts;
-    private Context mContext;
+    private DetailActivity detailActivity;
 
-    public GridViewAdapter(List<PostRespDto> posts, Context mContext) {
+    public GridViewAdapter(List<PostRespDto> posts, DetailActivity detailActivity) {
         this.posts = posts;
-        this.mContext = mContext;
+        this.detailActivity = detailActivity;
     }
 
     @NonNull
@@ -42,7 +42,7 @@ public class GridViewAdapter extends RecyclerView.Adapter<GridViewAdapter.MyView
     }
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-                holder.setItem(mContext,posts.get(position));
+                holder.setItem(detailActivity,posts.get(position));
     }
 
     @Override
@@ -64,8 +64,7 @@ public class GridViewAdapter extends RecyclerView.Adapter<GridViewAdapter.MyView
            gridviewItem = itemView.findViewById(R.id.gridview_item);
         }
 
-        public void setItem(Context mContext, PostRespDto postRespDto){
-            Log.d(TAG, "setItem: "+postRespDto);
+        public void setItem(DetailActivity detailActivity, PostRespDto postRespDto){
             Log.d(TAG, "setItem: "+postRespDto.getImages().get(0).getUri());
             String tmp;
             if(postRespDto.getPrice().equals("무료나눔")){
@@ -74,10 +73,14 @@ public class GridViewAdapter extends RecyclerView.Adapter<GridViewAdapter.MyView
                 tmp = moneyFormatToWon(Integer.parseInt(postRespDto.getPrice()));
             }
 
-            Uri uri = Uri.parse(postRespDto.getImages().get(0).getUri());
-            ivImage.setImageURI(uri);
+            Glide.with(detailActivity).load(postRespDto.getImages().get(0).getUri()).into(ivImage);
             ivImage.setClipToOutline(true);
             ivImage.setScaleType(ImageView.ScaleType.FIT_XY);
+
+          /*  Uri uri = Uri.parse(postRespDto.getImages().get(0).getUri());
+            ivImage.setImageURI(uri);
+            ivImage.setClipToOutline(true);
+            ivImage.setScaleType(ImageView.ScaleType.FIT_XY);*/
 
             tvTitle.setText(postRespDto.getTitle());
             if(tmp.equals("무료나눔")){

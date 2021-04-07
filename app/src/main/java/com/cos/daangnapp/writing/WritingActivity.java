@@ -1,5 +1,6 @@
 package com.cos.daangnapp.writing;
 
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,8 +35,16 @@ import com.cos.daangnapp.writing.model.ImageSaveReqdto;
 import com.cos.daangnapp.writing.model.PostSaveReqDto;
 import com.cos.daangnapp.writing.model.PostSaveRespDto;
 import com.cos.daangnapp.writing.service.PostService;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,22 +57,26 @@ public class WritingActivity extends AppCompatActivity  {
     private ArrayList<Uri> mUriArrayList = new ArrayList<>();
    private  RecyclerView rvImage;
    private  WritingAdapter writingAdapter;
+   private int count =0;
    private retrofitURL retrofitURL;
     private PostService postService= retrofitURL.retrofit.create(PostService .class);
     private PostSaveReqDto postSaveReqDto = new PostSaveReqDto();
     private ImageSaveReqdto imageSaveReqdto = new ImageSaveReqdto();
     private ImageButton btnBack;
     private static final String TAG = "WritingActivity";
+    private Uri filePath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writing);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
+        count =0;
         init();
 
     }
     public void init(){
+
 
         mEtTitle = findViewById(R.id.writing_et_title);
         mEtPrice = findViewById(R.id.writing_et_price);
@@ -120,6 +134,7 @@ public class WritingActivity extends AppCompatActivity  {
                     Toast.makeText(getApplicationContext(),"내용 을 입력해주세요.",Toast.LENGTH_SHORT).show();
                 }else {
                    submit(postSaveReqDto, userId);
+                    uploadFile();
                 }
                 break;
             case R.id.writing_btn_categories:
@@ -142,14 +157,6 @@ public class WritingActivity extends AppCompatActivity  {
                 CMRespDto<PostSaveRespDto> cmRespDto = response.body();
                 PostSaveRespDto postSaveRespDto = cmRespDto.getData();
                 imageSaveReqdto.setPostId(postSaveRespDto.getId());
-                for(int i=0; i<mUriArrayList.size(); i++){
-                    imageSaveReqdto.setUri(mUriArrayList.get(i).toString());
-                    ImageSave(imageSaveReqdto);
-                }
-                Intent intent = new Intent(WritingActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                WritingActivity.this.finish();
             }
             @Override
             public void onFailure(Call<CMRespDto<PostSaveRespDto>> call, Throwable t) {
@@ -180,15 +187,20 @@ public class WritingActivity extends AppCompatActivity  {
 
     public void uploadImage() {
 
-    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+    /*Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-   //   intent.setAction(Intent.ACTION_GET_CONTENT);
+     //   intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_MULTIPLE);
 
-        System.out.println("사진업로드");
+        System.out.println("사진업로드");*/
 
-
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+        //사진을 여러개 선택할수 있도록 한다
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_MULTIPLE );
+        Log.d(TAG, "uploadImage:사진여러개선택됨 !!! ");
 
     }
 
@@ -207,11 +219,14 @@ public class WritingActivity extends AppCompatActivity  {
         });
         builder.show();
     }
+
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d(TAG, "onActivityResult: "+requestCode);
         try {
-            if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK && data != null) {
-                if (data.getData() != null) {
+            if (requestCode ==  PICK_IMAGE_MULTIPLE) {
                     Uri uri;
                     //mUriArrayList.add(uri);
                     if (data.getClipData() != null) {
@@ -224,15 +239,94 @@ public class WritingActivity extends AppCompatActivity  {
                        rvImage.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
                         writingAdapter = new WritingAdapter(mUriArrayList, this);
                         rvImage.setAdapter(writingAdapter);
-
                     }
-                }
             } else {
-  
+                Log.d(TAG, "onActivityResult: 데이터음슴");
             }
         } catch (Exception e) {
-        
+            Log.d(TAG, "onActivityResult: 안됐땅");
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-}
+
+
+
+    //upload the file
+    private void uploadFile() {
+        for(int i=0; i<mUriArrayList.size(); i++)
+        //업로드할 파일이 있으면 수행
+        if (mUriArrayList != null) {
+            //업로드 진행 Dialog 보이기
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("업로드중...");
+            progressDialog.show();
+            //storage
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            //Unique한 파일명을 만들자.
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHH_mmss");
+            Date now = new Date();
+            String filename = formatter.format(now)+mUriArrayList.get(i)+".png";
+            //storage 주소와 폴더 파일명을 지정해 준다.
+            StorageReference storageRef = storage.getReferenceFromUrl("gs://daangnappchat.appspot.com").child("images/" + filename);
+            //올라가거라...
+                storageRef.putFile(mUriArrayList.get(i))
+                        //성공시
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                               progressDialog.dismiss(); //업로드 진행 Dialog 상자 닫기
+                         //       Toast.makeText(getApplicationContext(), "업로드 완료!", Toast.LENGTH_SHORT).show();
+                                FirebaseStorage storage = FirebaseStorage.getInstance("gs://daangnappchat.appspot.com");
+                                StorageReference storageRef = storage.getReference();
+                                storageRef.child("images/"+filename).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        //이미지 로드 성공시
+                                        Log.d(TAG, "onSuccess: "+uri.toString());
+                                            imageSaveReqdto.setUri(uri.toString());
+                                            ImageSave(imageSaveReqdto);
+                                            count++;
+                                        if(count==mUriArrayList.size()){
+                                            Intent intent = new Intent(WritingActivity.this, MainActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+                                            WritingActivity.this.finish();
+                                        }
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        //이미지 로드 실패시
+                                        Log.d(TAG, "onFailure: 실패");
+                                        Toast.makeText(WritingActivity.this, "실패", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                            }
+                        })
+                        //실패시
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "업로드 실패!", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        //진행중
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                @SuppressWarnings("VisibleForTests") //이걸 넣어 줘야 아랫줄에 에러가 사라진다. 넌 누구냐?
+                                        double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                //dialog에 진행률을 퍼센트로 출력해 준다
+                                progressDialog.setMessage("Uploaded " + ((int) progress) + "% ...");
+                            }
+                        });
+
+        } else {
+            Toast.makeText(getApplicationContext(), "파일을 먼저 선택하세요.", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+    }
+

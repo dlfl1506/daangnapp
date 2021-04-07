@@ -4,7 +4,6 @@ package com.cos.daangnapp.main.chat.adapter;
 import android.content.Context;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.cos.daangnapp.R;
+import com.cos.daangnapp.main.chat.ChatActivity;
 import com.cos.daangnapp.main.chat.model.Chat;
 
 import java.util.List;
@@ -25,14 +26,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     private static final String TAG = "UserAdapter";
 
     // 4번 컬렉션 생성
+    private ChatActivity chatActivity;
     private final List<Chat> chats;
     private String nickname;
     private String photo;
 
-    public ChatAdapter(List<Chat> chats, String nickname,String photo) {
+    public ChatAdapter(ChatActivity chatActivity, List<Chat> chats, String nickname, String photo) {
+        this.chatActivity = chatActivity;
         this.chats = chats;
         this.nickname = nickname;
-        this.photo=photo;
+        this.photo = photo;
     }
 
     // 5번 addItem, removeItem
@@ -66,7 +69,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     @Override // 최초 로딩끝나고 그 뒤부터는 얘가 호출됨, 데이터 추가
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: ");
-        holder.setItem(chats.get(position), nickname,photo);
+        holder.setItem(chatActivity,chats.get(position), nickname,photo);
 
     }
 
@@ -93,7 +96,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
             layoutChat = itemView.findViewById(R.id.layout_chat);
         }
 
-        public void setItem(Chat chat,String nickname,String photo){
+        public void setItem(ChatActivity chatActivity,Chat chat,String nickname,String photo){
 
             Log.d(TAG, "setItem: 닉네임" + chat.getNickname());
             Log.d(TAG, "setItem: 내닉네임" + nickname);
@@ -103,16 +106,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
                 if (chat.getNickname().equals(nickname)){
                     layoutChat.setGravity(View.TEXT_ALIGNMENT_TEXT_END);
-                    ivImage.setImageURI(Uri.parse(chat.getProfileUri()));
+                    Glide.with(chatActivity).load(chat.getProfileUri()).into(ivImage);
                     ivImage.setBackground(new ShapeDrawable(new OvalShape()));
                     ivImage.setClipToOutline(true);
                     ivImage.setScaleType(ImageView.ScaleType.FIT_XY);
                 }else{
-                    ivImage.setImageURI(Uri.parse(photo));
+                    Glide.with(chatActivity).load(photo).into(ivImage);
                     ivImage.setBackground(new ShapeDrawable(new OvalShape()));
                     ivImage.setClipToOutline(true);
                     ivImage.setScaleType(ImageView.ScaleType.FIT_XY);
-
                 }
         }
     }

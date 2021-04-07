@@ -96,7 +96,7 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         List<Chat> chats = new ArrayList<>();
-        chatAdapter = new ChatAdapter(chats,nickname,photo);
+        chatAdapter = new ChatAdapter(ChatActivity.this,chats,nickname,photo);
         rvChat.setAdapter(chatAdapter);
 
         myRef.addChildEventListener(new ChildEventListener() {
